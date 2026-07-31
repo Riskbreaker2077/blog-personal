@@ -1,0 +1,23 @@
+# Generadores estáticos
+public/
+.hugo_build.lock
+dist/
+build/
+.cache/
+
+# Dependencias
+node_modules/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Entornos
+.env
+.env.local
