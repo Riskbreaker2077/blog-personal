@@ -15,3 +15,4 @@ Material extraído de `Blog.Personal.zip` (enviado por Camilo el 31-jul-2026).
 
 - En `uploads/` había dos imágenes bit-exact (mismo MD5). Se eliminó el duplicado conservando la original.
 - El contenido de los posts Astro (`astro-base/src/content/posts/`) **no se incluye** porque eran material de prueba/mockup, no contenido editorial real.
+- **Esta carpeta sí vive en el repo** como archivo histórico y base de trabajo gráfico. **No** se incluye en el build de Astro: la config de Astro (que se configurará en la feature 000) debe excluir este directorio.
