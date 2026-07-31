@@ -1,0 +1,36 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { AUTHOR } from "~/data/site";
+---
+<BaseLayout title="Sobre — Camilo Moreno" activeNav="about">
+  <div class="about-grid">
+    <div class="portrait">retrato — 3:4</div>
+    <div class="about-body">
+      <h1>Hola, soy <em>Camilo</em>.</h1>
+      <p>
+        Doy clases de filosofía en una universidad de Bogotá. Llevo doce
+        años entrando a un salón cada semana y todavía no sé bien por qué
+        no me canso.
+      </p>
+      <p>
+        Escribo sobre los temas que me obsesionan: la pregunta por la
+        técnica desde Heidegger, la pedagogía como práctica filosófica, y
+        lo que los grandes modelos de lenguaje nos obligan a reformular
+        sobre qué cosa es pensar.
+      </p>
+      <p>
+        Este blog no tiene calendario, ni newsletter, ni métricas. Lo
+        escribo en las mañanas, antes de que el día se vuelva otro día.
+        Si algo aquí te resuena, escríbeme — leo todos los correos, aunque
+        a veces tardo en responder.
+      </p>
+      <dl class="about-facts">
+        <dt>Vive en</dt><dd>{AUTHOR.location}, Colombia</dd>
+        <dt>Trabaja en</dt><dd>Universidad — Filosofía</dd>
+        <dt>Escribiendo</dt><dd>desde {AUTHOR.since}</dd>
+        <dt>Lee</dt><dd>despacio, releyendo</dd>
+        <dt>Contacto</dt><dd>{AUTHOR.email}</dd>
+      </dl>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+interface Props {
+  activeNav?: "home" | "now" | "projects" | "about" | "archive";
+}
+const { activeNav = "home" } = Astro.props;
+
+const links = [
+  { href: "/",          key: "home",     label: "índice"    },
+  { href: "/sobre",     key: "about",    label: "sobre"     },
+  { href: "/archivo",   key: "archive",  label: "archivo"   },
+] as const;
+---
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Inicio">
+    <span class="brand-dot"></span>
+    <span>Camilo Moreno</span>
+    <span class="brand-sub">— bitácora</span>
+  </a>
+
+  <nav class="nav">
+    {links.map(l => (
+      <a href={l.href} class={activeNav === l.key ? "is-active" : ""}>{l.label}</a>
+    ))}
+    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+      <span id="theme-toggle-icon">●</span>
+    </button>
+  </nav>
+</header>
+
+<script is:inline>
+  (function() {
+    var btn  = document.getElementById("theme-toggle");
+    var icon = document.getElementById("theme-toggle-icon");
+    if (!btn || !icon) return;
+
+    function sync() {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      icon.textContent = dark ? "○" : "●";
+      btn.title = dark ? "Cambiar a modo claro" : "Cambiar a modo oscuro";
+    }
+    sync();
+
+    btn.addEventListener("click", function () {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      if (dark) {
+        document.documentElement.removeAttribute("data-theme");
+        try { localStorage.setItem("theme", "light"); } catch (_) {}
+      } else {
+        document.documentElement.setAttribute("data-theme", "dark");
+        try { localStorage.setItem("theme", "dark"); } catch (_) {}
+      }
+      sync();
+    });
+  })();
+</script>

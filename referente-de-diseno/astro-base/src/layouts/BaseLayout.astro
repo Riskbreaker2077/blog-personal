@@ -1,0 +1,56 @@
+---
+// Layout base — shell, topbar, footer, head con fuentes.
+import Topbar from "~/components/Topbar.astro";
+import "~/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeNav?: "home" | "now" | "projects" | "about" | "archive";
+}
+
+const {
+  title = "Camilo Moreno — Blog",
+  description = "Notas sobre filosofía, educación e inteligencia artificial.",
+  activeNav = "home",
+} = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    {/* Set theme before paint to avoid FOUC */}
+    <script is:inline>
+      (function() {
+        try {
+          var saved = localStorage.getItem("theme");
+          var prefers = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (saved === "dark" || (!saved && prefers)) {
+            document.documentElement.setAttribute("data-theme", "dark");
+          }
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div class="shell">
+      <Topbar activeNav={activeNav} />
+      <main>
+        <slot />
+      </main>
+
+      <footer class="footer">
+        <div class="colophon">
+          Hecho con 🫰 desde el Quindío.
+        </div>
+        <div>© 2021–2026 · CC BY-NC 4.0</div>
+      </footer>
+    </div>
+  </body>
+</html>

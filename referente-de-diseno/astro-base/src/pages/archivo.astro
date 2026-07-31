@@ -1,0 +1,42 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { CATEGORIES, fmtDate } from "~/data/site";
+
+const all = (await getCollection("posts", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const byYear = new Map<number, typeof all>();
+for (const p of all) {
+  const y = p.data.date.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
+---
+<BaseLayout title="Archivo — Camilo Moreno" activeNav="archive">
+  <header class="archive-head">
+    <h1>Archivo <em>cronológico</em>.</h1>
+    <p>Todas las entradas, de la más reciente a la más antigua.</p>
+  </header>
+
+  {years.map(([year, posts]) => (
+    <section class="archive-section">
+      <div class="yr">{year}</div>
+      <ul>
+        {posts.map(p => {
+          const cat = CATEGORIES[p.data.category];
+          return (
+            <li>
+              <a href={`/posts/${p.slug}/`}>
+                <span class="a-date">{fmtDate(p.data.date, "monthday")}</span>
+                <span class="a-title">{p.data.title}</span>
+                <span class="a-tag">{cat.label.toLowerCase()}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  ))}
+</BaseLayout>

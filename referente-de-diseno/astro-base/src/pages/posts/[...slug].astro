@@ -1,0 +1,74 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { CATEGORIES, fmtDate } from "~/data/site";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("posts", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+  return posts.map((post, idx) => ({
+    params: { slug: post.slug },
+    props: {
+      post,
+      prev: posts[idx + 1] ?? null, // anterior (más viejo)
+      next: posts[idx - 1] ?? null, // siguiente (más nuevo)
+    },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<"posts">;
+  prev: CollectionEntry<"posts"> | null;
+  next: CollectionEntry<"posts"> | null;
+};
+
+const { post, prev, next } = Astro.props as Props;
+const { Content } = await post.render();
+const cat = CATEGORIES[post.data.category];
+---
+<BaseLayout title={`${post.data.title} — Camilo Moreno`} description={post.data.excerpt} activeNav="home">
+  <article class="post">
+    <div class="progress" id="reading-progress"></div>
+
+    <a class="back-link" href="/">← volver al índice</a>
+
+    <header class="post-head">
+      <div class="post-eyebrow">
+        <span class="pill" data-tone={cat.tone}>{cat.label}</span>
+        <span>{fmtDate(post.data.date, "long")}</span>
+        <span>·</span>
+        <span>{post.data.reading} min de lectura</span>
+      </div>
+      <h1 class="post-title">{post.data.title}</h1>
+      <p class="post-lede">{post.data.excerpt}</p>
+    </header>
+
+    <div class="post-body">
+      <Content />
+    </div>
+
+    <footer class="post-foot">
+      <div>
+        {prev && <a href={`/posts/${prev.slug}/`}>← {prev.data.title}</a>}
+      </div>
+      <div style="text-align: right;">
+        {next && <a href={`/posts/${next.slug}/`}>{next.data.title} →</a>}
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var bar = document.getElementById("reading-progress");
+    if (!bar) return;
+    function update() {
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = max > 0 ? (h.scrollTop / max * 100) + "%" : "0";
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+  })();
+</script>

@@ -1,0 +1,120 @@
+---
+import BaseLayout from "~/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { CATEGORIES, AUTHOR, fmtDate } from "~/data/site";
+
+// Cargar posts, descartar borradores, ordenar por fecha desc
+const all = (await getCollection("posts", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Agrupar por año
+const byYear = new Map<number, typeof all>();
+for (const p of all) {
+  const y = p.data.date.getFullYear();
+  if (!byYear.has(y)) byYear.set(y, []);
+  byYear.get(y)!.push(p);
+}
+const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
+---
+<BaseLayout activeNav="home">
+  <section class="hero">
+    <h1>
+      Notas sobre filosofía, educación y <span class="em">máquinas que parecen pensar</span>.
+    </h1>
+    <p>
+      Soy Camilo. Doy clases, leo despacio y escribo aquí cuando una idea
+      me persigue durante más de una semana. Sin calendario editorial, sin
+      newsletter, sin prisa.
+    </p>
+  </section>
+
+  <div class="filter-row" id="filter-row">
+    <span class="filter-label">filtrar —</span>
+    <button class="chip is-on" data-filter="todos">todos</button>
+    {Object.entries(CATEGORIES).map(([key, c]) => (
+      <button class="chip" data-filter={key} data-tone={c.tone}>
+        <span class="dot"></span>{c.label.toLowerCase()}
+      </button>
+    ))}
+  </div>
+
+  <div class="timeline">
+    {years.map(([year, posts]) => (
+      <>
+        <div class="year" data-year={year}>
+          <div class="year-num">{year}</div>
+          <div class="year-caption">
+            <span class="yr-count">{posts.length}</span> {posts.length === 1 ? "entrada" : "entradas"}
+          </div>
+        </div>
+        {posts.map(p => {
+          const cat = CATEGORIES[p.data.category];
+          return (
+            <a
+              class="row"
+              href={`/posts/${p.slug}/`}
+              data-cat={p.data.category}
+              data-tone={cat.tone}
+              data-year={year}
+            >
+              <div class="row-date">{fmtDate(p.data.date, "monthday")}</div>
+              <div class="row-marker"></div>
+              <div class="row-body">
+                <h2 class="row-title">{p.data.title}</h2>
+                <p class="row-excerpt">{p.data.excerpt}</p>
+                <div class="row-meta">
+                  <span class="cat" data-tone={cat.tone}>{cat.label}</span>
+                  <span>{p.data.reading} min</span>
+                  {p.data.tags.slice(0, 2).map(t => (
+                    <span style="color: var(--muted-2);">#{t.replace(/\s+/g, "-")}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </>
+    ))}
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    var chips = document.querySelectorAll("#filter-row .chip");
+    var rows  = document.querySelectorAll(".timeline .row");
+    var years = document.querySelectorAll(".timeline .year");
+
+    function apply(filter) {
+      chips.forEach(function (c) {
+        c.classList.toggle("is-on", c.getAttribute("data-filter") === filter);
+      });
+      var visibleByYear = {};
+      rows.forEach(function (r) {
+        var match = filter === "todos" || r.getAttribute("data-cat") === filter;
+        r.classList.toggle("is-empty", !match);
+        if (match) {
+          var y = r.getAttribute("data-year");
+          visibleByYear[y] = (visibleByYear[y] || 0) + 1;
+        }
+      });
+      years.forEach(function (y) {
+        var yr = y.getAttribute("data-year");
+        var count = visibleByYear[yr] || 0;
+        y.classList.toggle("is-empty", count === 0);
+        var counter = y.querySelector(".yr-count");
+        if (counter) counter.textContent = count;
+        var sibling = y.querySelector(".year-caption");
+        if (sibling) {
+          var word = count === 1 ? "entrada" : "entradas";
+          sibling.innerHTML = '<span class="yr-count">' + count + "</span> " + word;
+        }
+      });
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        apply(c.getAttribute("data-filter"));
+      });
+    });
+  })();
+</script>
