@@ -1,0 +1,102 @@
+---
+import { TEMAS_ORDENADOS, type TemaId } from "../data/temas";
+
+interface Props {
+  /** Tema que corresponde a la página actual; `todos` en el índice. */
+  activo: TemaId | "todos";
+  /** Destino de la píldora «todos». El índice manda al archivo completo. */
+  hrefTodos?: string;
+}
+
+const { activo, hrefTodos = "/" } = Astro.props;
+---
+
+<nav class="filter-row" aria-label="Filtrar por tema">
+  <span class="filter-label" aria-hidden="true">filtrar —</span>
+
+  <a
+    class="chip"
+    href={hrefTodos}
+    aria-current={activo === "todos" ? "page" : undefined}>todos</a
+  >
+
+  {
+    TEMAS_ORDENADOS.map(([id, tema]) => (
+      <a
+        class="chip"
+        href={`/temas/${id}/`}
+        data-tone={tema.tono}
+        aria-current={activo === id ? "page" : undefined}
+      >
+        <span class="dot" aria-hidden="true" />
+        {tema.label.toLowerCase()}
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .filter-label {
+    margin-right: 0.25rem;
+    color: var(--muted-2);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 5px 10px 5px 9px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--muted);
+    text-decoration: none;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .chip:hover {
+    border-color: color-mix(in oklab, var(--ink) 28%, transparent);
+    color: var(--ink);
+  }
+
+  .chip[aria-current="page"] {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+
+  .chip[data-tone="accent"] .dot {
+    background: var(--tone-accent);
+  }
+
+  .chip[data-tone="gold"] .dot {
+    background: var(--tone-gold);
+  }
+
+  .chip[data-tone="ink"] .dot {
+    background: var(--tone-ink);
+  }
+
+  .chip[data-tone="peri"] .dot {
+    background: var(--tone-peri);
+  }
+</style>

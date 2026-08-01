@@ -24,11 +24,14 @@ _Mapa breve de dónde vive cada cosa. Solo lo que un recién llegado necesita pa
 - `src/pages/index.astro` — landing: lista de los posts más recientes.
 - `src/pages/archivo.astro` — archivo cronológico completo.
 - `src/pages/posts/[...id].astro` — ruta dinámica que renderiza un post desde su `id` (nombre del archivo).
-- `src/lib/posts.ts` — helpers de posts: publicados vs. borradores, orden, fechas civiles y tiempo de lectura.
+- `src/pages/temas/[topic].astro` — una página por tema editorial: `/temas/<tema>/`.
+- `src/lib/posts.ts` — helpers de posts: publicados vs. borradores, orden, agrupación por año, filtro por tema, fechas civiles y tiempo de lectura.
 - `src/pages/sobre.astro` — página "Sobre mí".
 - `src/styles/global.css` — tokens de diseño (colores, tipografía, espaciado) y estilos base.
 - `src/components/Topbar.astro` — navegación superior.
-- `src/data/temas.ts` — temas editoriales, su tono de color y las entradas anunciadas mientras la Content Layer no exista.
+- `src/components/Cronologia.astro` — línea del pensamiento: años, marcadores y filas de post. La comparten índice y páginas de tema.
+- `src/components/FiltroTemas.astro` — fila de filtros. Son enlaces a `/temas/<tema>/`, sin JavaScript.
+- `src/data/temas.ts` — temas editoriales: etiqueta, abreviatura, tono de color y descripción de una línea.
 - `public/` — assets estáticos servidos tal cual (favicon, imágenes sueltas).
 - `spec/` — documentación del proyecto (specs, features, constitución, bitácora).
 - `referente-de-diseno/` — material de referencia visual y estructural heredado. **No es parte del blog en producción.**

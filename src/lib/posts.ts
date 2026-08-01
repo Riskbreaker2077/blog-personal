@@ -1,6 +1,12 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import type { TemaId } from "../data/temas";
 
 export type Post = CollectionEntry<"posts">;
+
+export interface GrupoAnual {
+  anio: string;
+  posts: Post[];
+}
 
 const MESES_LARGOS = [
   "enero",
@@ -47,6 +53,33 @@ export async function obtenerPosts(): Promise<Post[]> {
 
 export function anio(fecha: string): string {
   return fecha.slice(0, 4);
+}
+
+/**
+ * Agrupa por año conservando el orden de entrada, que ya es cronológico
+ * inverso. El año sale de la cadena, no de un `Date`: así ningún huso horario
+ * puede mover un post de diciembre al año siguiente.
+ */
+export function agruparPorAnio(posts: Post[]): GrupoAnual[] {
+  const grupos = new Map<string, Post[]>();
+  for (const post of posts) {
+    const clave = anio(post.data.pubDate);
+    const grupo = grupos.get(clave);
+    if (grupo) {
+      grupo.push(post);
+    } else {
+      grupos.set(clave, [post]);
+    }
+  }
+  return [...grupos].map(([anio, posts]) => ({ anio, posts }));
+}
+
+export function filtrarPorTema(posts: Post[], tema: TemaId): Post[] {
+  return posts.filter((post) => post.data.topic === tema);
+}
+
+export function contarEntradas(total: number): string {
+  return total === 1 ? "1 entrada" : `${total} entradas`;
 }
 
 export function formatearFecha(

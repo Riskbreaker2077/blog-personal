@@ -1,0 +1,163 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Cronologia from "../../components/Cronologia.astro";
+import FiltroTemas from "../../components/FiltroTemas.astro";
+import { TEMAS_ORDENADOS, type Tema, type TemaId } from "../../data/temas";
+import {
+  agruparPorAnio,
+  contarEntradas,
+  filtrarPorTema,
+  obtenerPosts,
+  type Post,
+} from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await obtenerPosts();
+  return TEMAS_ORDENADOS.map(([id, tema]) => ({
+    params: { topic: id },
+    props: { id, tema, posts: filtrarPorTema(posts, id) },
+  }));
+}
+
+interface Props {
+  id: TemaId;
+  tema: Tema;
+  posts: Post[];
+}
+
+const { id, tema, posts } = Astro.props;
+const grupos = agruparPorAnio(posts);
+---
+
+<BaseLayout
+  title={`${tema.label} — Camilo Moreno`}
+  description={tema.descripcion}
+>
+  <header class="tema-head" data-tone={tema.tono}>
+    <p class="kicker">
+      <span class="dot" aria-hidden="true"></span>tema
+    </p>
+    <h1>{tema.label}<em>.</em></h1>
+    <p class="lede">{tema.descripcion}</p>
+    <p class="cuenta">
+      {posts.length > 0 ? contarEntradas(posts.length) : "sin entradas todavía"}
+    </p>
+  </header>
+
+  <FiltroTemas activo={id} />
+
+  {
+    posts.length > 0 ? (
+      <Cronologia grupos={grupos} />
+    ) : (
+      <section class="vacio" aria-labelledby="vacio-title">
+        <h2 id="vacio-title">Este tema todavía está en blanco.</h2>
+        <p>
+          Nada publicado bajo {tema.label.toLowerCase()} por ahora. Cuando llegue
+          el primer texto aparecerá aquí solo. Mientras tanto, el{" "}
+          <a href="/archivo/">archivo completo</a> tiene lo que sí está escrito.
+        </p>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .tema-head {
+    max-width: 45rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.875rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+
+  [data-tone="accent"] .dot {
+    background: var(--tone-accent);
+  }
+
+  [data-tone="gold"] .dot {
+    background: var(--tone-gold);
+  }
+
+  [data-tone="ink"] .dot {
+    background: var(--tone-ink);
+  }
+
+  [data-tone="peri"] .dot {
+    background: var(--tone-peri);
+  }
+
+  h1 {
+    margin: 0 0 0.875rem;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .lede {
+    max-width: var(--max-content);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 1.06rem;
+    line-height: 1.5;
+  }
+
+  .cuenta {
+    margin: 0.875rem 0 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .vacio {
+    max-width: var(--max-content);
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--rule);
+  }
+
+  .vacio h2 {
+    margin: 0 0 0.625rem;
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .vacio p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  .vacio a {
+    color: var(--accent);
+    text-underline-offset: 0.25em;
+  }
+</style>

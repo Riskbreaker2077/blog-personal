@@ -6,14 +6,14 @@ _Orden y estado de las features. Solo hay una feature siguiente a la vez._
 
 1. **000 · Fundamento visual y técnico** — Astro 5, sistema visual, layout, navegación, portada representativa y página “Sobre”.
 2. **001 · Núcleo editorial publicable** — Content Layer moderna, schema, página individual y borradores. Primer texto real publicado: «Las máquinas de escribir».
+3. **002 · Índice, archivo y temas** — portada con los cinco textos más recientes, línea cronológica agrupada por año, archivo completo y una página por tema.
 
 ## Siguiente 🔜
 
-3. **002 · Índice, archivo y temas** — portada dinámica, línea cronológica, archivo completo y páginas temáticas.
+4. **003 · Distribución e indexación** — RSS, sitemap, robots, metadatos sociales, datos estructurados y 404.
 
 ## Después
 
-4. **003 · Distribución e indexación** — RSS, sitemap, robots, metadatos sociales, datos estructurados y 404.
 5. **004 · Despliegue en Hostinger** — dominio, build de producción, publicación, verificación y rollback documentado.
 
 ## Backlog / condicionado por uso real 💡

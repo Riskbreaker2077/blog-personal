@@ -1,8 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { ENTRADAS_ANUNCIADAS, TEMAS, type TemaId } from "../data/temas";
+import FiltroTemas from "../components/FiltroTemas.astro";
+import { TEMAS } from "../data/temas";
+import {
+  agruparPorAnio,
+  contarEntradas,
+  formatearFecha,
+  obtenerPosts,
+} from "../lib/posts";
 
-const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
+const posts = await obtenerPosts();
+const grupos = agruparPorAnio(posts);
 ---
 
 <BaseLayout
@@ -11,41 +19,63 @@ const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
 >
   <header class="archive-head">
     <h1>Archivo <em>cronológico</em>.</h1>
-    <p>Todas las entradas, de la más reciente a la más antigua.</p>
+    <p>
+      Todas las entradas, de la más reciente a la más antigua.
+      {posts.length > 0 && <span class="total">{contarEntradas(posts.length)} en total.</span>}
+    </p>
   </header>
 
-  <section class="empty" aria-labelledby="empty-title">
-    <p class="yr">2026</p>
-    <div>
-      <h2 id="empty-title">Todavía no hay entradas publicadas.</h2>
-      <p>
-        El archivo se llena solo: cada texto publicado aparecerá aquí agrupado
-        por año. Por ahora hay {ENTRADAS_ANUNCIADAS.length} en camino, anunciadas
-        en <a href="/">el índice</a>.
-      </p>
-    </div>
-  </section>
+  <FiltroTemas activo="todos" hrefTodos="/archivo/" />
 
-  <section class="temas" aria-labelledby="temas-title">
-    <h2 id="temas-title">Temas previstos</h2>
-    <ul>
-      {
-        temas.map(([id, tema]) => (
-          <li data-tone={tema.tono}>
-            <span class="dot" aria-hidden="true" />
-            {tema.label}
-            <span class="short">{id}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  {
+    grupos.map((grupo) => (
+      <section class="archive-section" aria-labelledby={`anio-${grupo.anio}`}>
+        <h2 class="yr" id={`anio-${grupo.anio}`}>
+          {grupo.anio}
+        </h2>
+        <ul>
+          {grupo.posts.map((post) => (
+            <li>
+              <span class="a-date">
+                <time datetime={post.data.pubDate}>
+                  {formatearFecha(post.data.pubDate, "corto")}
+                </time>
+              </span>
+              <a class="a-title" href={`/posts/${post.id}/`}>
+                {post.data.title}
+              </a>
+              <span class="a-tag">
+                {TEMAS[post.data.topic].label.toLowerCase()}
+                {post.data.draft && <span class="draft"> · borrador</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  {
+    posts.length === 0 && (
+      <section class="empty" aria-labelledby="empty-title">
+        <p class="yr">—</p>
+        <div>
+          <h2 id="empty-title">Todavía no hay entradas publicadas.</h2>
+          <p>
+            El archivo se llena solo: cada texto publicado aparece aquí agrupado
+            por año. Mientras tanto puedes leer{" "}
+            <a href="/sobre/">de qué va este cuaderno</a>.
+          </p>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
   .archive-head {
     max-width: 45rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2.25rem;
   }
 
   .archive-head h1 {
@@ -65,12 +95,15 @@ const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
     color: var(--ink-2);
   }
 
-  .empty {
+  .total {
+    color: var(--muted);
+  }
+
+  .archive-section {
     display: grid;
     grid-template-columns: var(--rail) 1fr;
     gap: var(--rail-gap);
-    padding-bottom: 3rem;
-    border-bottom: 1px dashed var(--rule);
+    margin-bottom: 3rem;
   }
 
   .yr {
@@ -79,8 +112,72 @@ const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
     color: var(--muted);
     font-family: var(--font-serif);
     font-size: 1.8rem;
+    font-weight: 400;
     line-height: 1;
     letter-spacing: -0.02em;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.625rem 0;
+    border-bottom: 1px dashed var(--rule);
+    transition: padding-left 0.2s;
+  }
+
+  li:hover {
+    padding-left: 8px;
+  }
+
+  .a-date {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .a-title {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .a-title:hover,
+  .a-title:focus-visible {
+    color: var(--accent);
+  }
+
+  .a-tag {
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .draft {
+    color: var(--rose);
+  }
+
+  .empty {
+    display: grid;
+    grid-template-columns: var(--rail) 1fr;
+    gap: var(--rail-gap);
+    padding-bottom: 3rem;
+    border-bottom: 1px dashed var(--rule);
   }
 
   .empty h2 {
@@ -105,75 +202,20 @@ const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
     text-underline-offset: 0.25em;
   }
 
-  .temas {
-    margin-top: 2.5rem;
-  }
-
-  .temas h2 {
-    margin: 0 0 1.125rem;
-    color: var(--muted-2);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  li {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 5px 10px 5px 9px;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--muted-2);
-  }
-
-  li[data-tone="accent"] .dot {
-    background: var(--tone-accent);
-  }
-
-  li[data-tone="gold"] .dot {
-    background: var(--tone-gold);
-  }
-
-  li[data-tone="ink"] .dot {
-    background: var(--tone-ink);
-  }
-
-  li[data-tone="peri"] .dot {
-    background: var(--tone-peri);
-  }
-
-  .short {
-    color: var(--muted-2);
-    text-transform: none;
-  }
-
   @media (max-width: 43.75rem) {
+    .archive-section,
     .empty {
       grid-template-columns: 1fr;
       gap: 0.75rem;
+    }
+
+    li {
+      grid-template-columns: 4rem 1fr;
+      row-gap: 0.25rem;
+    }
+
+    .a-tag {
+      grid-column: 2;
     }
   }
 </style>

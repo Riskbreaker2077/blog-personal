@@ -2,6 +2,34 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-01 · Sesión 7 — Índice, archivo y temas (feature 002)
+
+**Qué se hizo**
+
+- `src/lib/posts.ts`: `agruparPorAnio`, `filtrarPorTema` y `contarEntradas`. El año sale de la cadena `AAAA-MM-DD`, nunca de un `Date`.
+- `Cronologia.astro`: la línea del pensamiento como componente, compartida por el índice y las páginas de tema. La fila entera es zona de clic mediante un enlace estirado sobre el título; no hay JavaScript.
+- `FiltroTemas.astro`: la fila de filtros del prototipo convertida en enlaces reales a `/temas/<tema>/`, con `aria-current="page"` en el activo.
+- Índice reescrito con posts reales: máximo cinco recientes, agrupados por año, y cierre que enlaza al archivo cuando hay más.
+- `/archivo/` completo, agrupado por año, en la lista compacta del prototipo (fecha, título, tema).
+- `/temas/<tema>/` para los cinco temas, con encabezado, descripción y estado vacío propio.
+- `src/data/temas.ts`: fuera `ENTRADAS_ANUNCIADAS`; cada tema gana una `descripcion` de una línea que alimenta la página y su `<meta name="description">`.
+
+**Verificación**
+
+- Build con siete fixtures de 2023 a 2026 y varios temas: el índice corta en cinco y agrupa 2026/2025/2024; el archivo lista los siete; `31 dic` y `01 ene` se quedan en su año. Fixtures borradas después.
+- Borrador de prueba: ausente de índice, archivo, tema y `dist/`.
+- ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints sobre 18 archivos. Build final: 9 páginas.
+
+**Pendiente**
+
+- La 003 (RSS, sitemap, metadatos sociales, 404) es la siguiente.
+
+**Decisiones**
+
+- Los filtros no son estado de cliente sino URLs: cada tema tiene su página estática, indexable y compartible. Es lo que permite que funcionen sin JavaScript.
+- El índice muestra cinco y delega el resto al archivo: la portada es una invitación, no un listado completo.
+- La descripción de cada tema vive en `src/data/temas.ts` y no en el contenido: es interfaz, no texto editorial.
+
 ## 2026-08-01 · Sesión 6 — Epígrafe y primer texto real (cierre de la 001)
 
 **Qué se hizo**

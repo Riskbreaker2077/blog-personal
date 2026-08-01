@@ -1,6 +1,6 @@
 # 002 · Índice, archivo y temas
 
-**Estado:** propuesta
+**Estado:** implementada
 
 ## Qué hace
 
@@ -13,14 +13,14 @@ Convierte el núcleo editorial en un archivo navegable:
 
 ## Criterios de aceptación
 
-- [ ] Un post publicado aparece automáticamente en índice, archivo y tema.
-- [ ] Los borradores no aparecen en producción.
-- [ ] El índice muestra como máximo cinco recientes y enlaza al archivo.
-- [ ] El archivo agrupa por año sin errores de zona horaria.
-- [ ] Cada tema tiene URL estable y estado vacío útil.
-- [ ] Los filtros son enlaces funcionales sin JavaScript.
-- [ ] La cronología conserva semántica, teclado y responsive.
-- [ ] Build, lint y typecheck pasan.
+- [x] Un post publicado aparece automáticamente en índice, archivo y tema.
+- [x] Los borradores no aparecen en producción.
+- [x] El índice muestra como máximo cinco recientes y enlaza al archivo.
+- [x] El archivo agrupa por año sin errores de zona horaria.
+- [x] Cada tema tiene URL estable y estado vacío útil.
+- [x] Los filtros son enlaces funcionales sin JavaScript.
+- [x] La cronología conserva semántica, teclado y responsive.
+- [x] Build, lint y typecheck pasan.
 
 ## Fuera de alcance
 

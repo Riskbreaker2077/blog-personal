@@ -11,55 +11,46 @@ export interface Tema {
   label: string;
   short: string;
   tono: Tono;
+  /** Una línea. Encabeza la página del tema y alimenta su `<meta name="description">`. */
+  descripcion: string;
 }
 
 export const TEMAS: Record<TemaId, Tema> = {
-  filosofia: { label: "Filosofía", short: "fil", tono: "accent" },
-  educacion: { label: "Educación", short: "edu", tono: "gold" },
+  filosofia: {
+    label: "Filosofía",
+    short: "fil",
+    tono: "accent",
+    descripcion:
+      "Preguntas que no se dejan resolver rápido: lenguaje, técnica, existencia y las cosas que damos por sentadas.",
+  },
+  educacion: {
+    label: "Educación",
+    short: "edu",
+    tono: "gold",
+    descripcion:
+      "El oficio docente por dentro: leer con otros, sostener la atención y decidir qué merece una clase.",
+  },
   "mundo-editorial": {
     label: "Mundo editorial",
     short: "edt",
     tono: "peri",
+    descripcion:
+      "Elegir, ordenar, corregir y publicar: notas sobre el trabajo que rodea a los libros.",
   },
   "inteligencia-artificial": {
     label: "Inteligencia artificial",
     short: "ia",
     tono: "ink",
+    descripcion:
+      "Máquinas que escriben y hablan, y lo que su compañía le hace al criterio y al trabajo intelectual.",
   },
-  general: { label: "General", short: "gen", tono: "muted" },
+  general: {
+    label: "General",
+    short: "gen",
+    tono: "muted",
+    descripcion:
+      "Textos que no caben en un solo cajón: apuntes sueltos, notas de lectura y asuntos de la casa.",
+  },
 };
 
-/**
- * Entradas anunciadas mientras la feature 001 (núcleo editorial) no exista.
- * Cuando la Content Layer entre, este módulo se reemplaza por `getCollection`.
- */
-export interface EntradaAnunciada {
-  estado: string;
-  title: string;
-  description: string;
-  tema: TemaId;
-}
-
-export const ENTRADAS_ANUNCIADAS: EntradaAnunciada[] = [
-  {
-    estado: "próxima",
-    title: "Pensar despacio en una época que acelera",
-    description:
-      "Una nota inaugural sobre la atención, el oficio de leer y la decisión de sostener ideas largas.",
-    tema: "filosofia",
-  },
-  {
-    estado: "borrador",
-    title: "El aula también es una forma de edición",
-    description:
-      "Elegir, ordenar, señalar y dejar espacio: apuntes sobre enseñar como práctica editorial.",
-    tema: "educacion",
-  },
-  {
-    estado: "borrador",
-    title: "Conversar con máquinas sin entregarles la voz",
-    description:
-      "Preguntas provisionales sobre autoría, criterio y trabajo intelectual asistido.",
-    tema: "inteligencia-artificial",
-  },
-];
+export const TEMAS_ORDENADOS = Object.entries(TEMAS) as [TemaId, Tema][];

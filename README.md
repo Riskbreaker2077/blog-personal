@@ -20,12 +20,12 @@ La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/
 
 ## Estado
 
-La base visual y el núcleo editorial ya están implementados; falta publicar el primer texto real.
+La base visual, el núcleo editorial y el archivo navegable ya están implementados. El primer texto real está publicado.
 
 1. **000 · Fundamento visual y técnico** — implementada.
-2. **001 · Núcleo editorial publicable** — implementada salvo el primer texto real.
-3. **002 · Índice, archivo y temas** — siguiente.
-4. **003 · Distribución e indexación** — propuesta.
+2. **001 · Núcleo editorial publicable** — implementada.
+3. **002 · Índice, archivo y temas** — implementada.
+4. **003 · Distribución e indexación** — siguiente.
 5. **004 · Despliegue en Hostinger** — propuesta.
 
 Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
@@ -51,12 +51,12 @@ Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadma
 
 ```text
 src/
-├── components/         navegación y footer
+├── components/         navegación, footer, cronología y filtro de temas
 ├── content/posts/      posts en Markdown
 ├── data/               temas editoriales y sus tonos
 ├── layouts/            layout raíz y layout de lectura
-├── lib/                helpers de posts, fechas y tiempo de lectura
-├── pages/              índice, archivo, «Sobre» y la ruta /posts/<id>/
+├── lib/                helpers de posts, fechas, agrupación y tiempo de lectura
+├── pages/              índice, archivo, «Sobre», /temas/<tema>/ y /posts/<id>/
 └── styles/             tokens y estilos globales
 
 public/                 assets estáticos
