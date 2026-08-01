@@ -1,0 +1,189 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: "/", label: "índice", match: "/" },
+  { href: "/sobre/", label: "sobre", match: "/sobre/" },
+  { href: "/archivo/", label: "archivo", match: "/archivo/" },
+];
+---
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Camilo Moreno, ir al índice">
+    <span class="brand-dot" aria-hidden="true"></span>
+    <span>Camilo Moreno</span>
+    <span class="brand-sub">— bitácora</span>
+  </a>
+
+  <nav class="nav" aria-label="Navegación principal">
+    <ul>
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={currentPath === link.match ? "page" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Cambiar a modo oscuro"
+        >
+          <span aria-hidden="true">●</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const boton = document.getElementById("theme-toggle");
+  const meta = document.getElementById("theme-color") as HTMLMetaElement | null;
+
+  function pintar(tema: string) {
+    document.documentElement.dataset.theme = tema;
+    if (meta) meta.content = tema === "dark" ? "#020609" : "#f7f4ee";
+    if (!boton) return;
+    const oscuro = tema === "dark";
+    boton.setAttribute("aria-pressed", String(oscuro));
+    boton.setAttribute(
+      "aria-label",
+      oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro",
+    );
+    const icono = boton.firstElementChild;
+    if (icono) icono.textContent = oscuro ? "○" : "●";
+  }
+
+  pintar(document.documentElement.dataset.theme ?? "light");
+
+  boton?.addEventListener("click", () => {
+    const siguiente =
+      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    try {
+      localStorage.setItem("tema", siguiente);
+    } catch {
+      /* modo privado: el tema dura lo que la sesión */
+    }
+    pintar(siguiente);
+  });
+</script>
+
+<style>
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .brand-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, var(--accent), var(--teal));
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  .brand-sub {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 1.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav a {
+    position: relative;
+    display: inline-block;
+    padding-block: 4px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav a:hover,
+  .nav a[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  .nav a[aria-current="page"]::after {
+    position: absolute;
+    right: 0;
+    bottom: -2px;
+    left: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--accent);
+    content: "";
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: none;
+    color: var(--muted);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition:
+      color 0.2s,
+      border-color 0.2s;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  @media (max-width: 34rem) {
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 1.125rem;
+      margin-bottom: 2.5rem;
+    }
+
+    ul {
+      gap: 1.125rem;
+    }
+  }
+</style>

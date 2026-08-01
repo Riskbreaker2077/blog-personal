@@ -1,30 +1,30 @@
 # Roadmap
 
-_Orden y estado de las features. Es la vista de "qué hay hecho, qué toca ahora y qué viene". Cada entrada apunta a su carpeta en `features/`._
+_Orden y estado de las features. Solo hay una feature siguiente a la vez._
 
 ## Hecho ✅
 
-_Features completadas, en orden de implementación._
-
-1. **000 · Proyecto base** — estructura Astro inicial con tipografía, layout, página de inicio, página "Sobre mí" y primer post de prueba. Sin features adicionales.
+1. **000 · Fundamento visual y técnico** — Astro 5, sistema visual, layout, navegación, portada representativa y página “Sobre”.
 
 ## Siguiente 🔜
 
-_Lo próximo a abordar. Idealmente una sola feature "en curso" a la vez._
+2. **001 · Núcleo editorial publicable** — Content Layer moderna, schema, primer texto real, página individual y borradores.
 
-2. **001 · Sistema de posts completo** — Content Collections, listado cronológico, página individual de post, archivo, página de tema (`/temas/educacion`).
+## Después
 
-## Backlog / ideas 💡
+3. **002 · Índice, archivo y temas** — portada dinámica, línea cronológica, archivo completo y páginas temáticas.
+4. **003 · Distribución e indexación** — RSS, sitemap, robots, metadatos sociales, datos estructurados y 404.
+5. **004 · Despliegue en Hostinger** — dominio, build de producción, publicación, verificación y rollback documentado.
 
-_Sin comprometer ni ordenar del todo. Ideas que respetan la constitución._
+## Backlog / condicionado por uso real 💡
 
-- **Feed RSS / Atom** — el blog es estático, generar `rss.xml` es trivial y suma interoperabilidad con lectores de feeds.
-- **Página 404 personalizada** — un texto breve en vez del 404 genérico de Hostinger.
-- **Tiempo de lectura estimado** — calculado a partir del número de palabras. Mostrar junto a la fecha.
-- **Sitemap XML** — para indexación. Astro lo genera con una integración oficial.
-- **Open Graph y Twitter Cards** — imágenes sociales por post, para que al compartir un link se vea presentable.
-- **Modo oscuro** — con un toggle en el Topbar. Decisión pendiente: ¿vale la pena para la audiencia?
-- **Página de "Colofón"** — stack usado, tipografías, licencia del contenido (¿CC BY-SA? ¿todos los derechos reservados?).
-- **Versión PDF por post** — descarga opcional. Útil para imprimir o leer sin conexión.
+- Página `/ahora`.
+- Página `/proyectos`.
+- Series editoriales.
+- Buscador estático con Pagefind.
+- Imágenes sociales generadas por post.
+- Barra de progreso para textos largos.
+- PDF por post.
+- Newsletter.
 
-> Cada feature nueva se crea como `features/NNN-nombre-feature/` con `spec.md`, `plan.md` y `tasks.md` antes de tocar código.
+> Cada feature se implementa solo después de aprobar su spec y plan. El despliegue requiere confirmación explícita.

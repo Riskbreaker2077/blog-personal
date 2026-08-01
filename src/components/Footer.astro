@@ -1,0 +1,55 @@
+---
+const anio = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <p class="colophon">Hecho desde el Quindío.</p>
+  <p class="meta">
+    © 2021–{anio} · Contenido
+    <abbr title="Creative Commons Atribución-NoComercial 4.0">CC BY-NC 4.0</abbr
+    >
+  </p>
+</footer>
+
+<style>
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: var(--space-7);
+    padding-top: 1.5rem;
+    padding-bottom: 0.25rem;
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--accent) 45%, transparent),
+        color-mix(in oklab, var(--teal) 45%, transparent) 55%,
+        color-mix(in oklab, var(--gold) 45%, transparent)
+      )
+      1;
+    color: var(--muted);
+  }
+
+  .colophon {
+    max-width: 20rem;
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .meta {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  abbr {
+    text-decoration: none;
+  }
+</style>

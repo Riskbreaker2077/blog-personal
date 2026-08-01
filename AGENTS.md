@@ -4,7 +4,7 @@ _Instrucciones operativas para agentes (humanos o IA) que trabajen en este proye
 
 ## Qué es este proyecto
 
-Blog personal estático de Camilo Moreno, escrito en español, construido con Astro 5. Pensado como canal de pensamiento largo: educación, filosofía, corrección de estilo y oficio docente.
+Blog personal estático de Camilo Moreno, escrito en español, construido con Astro 5. Pensado como canal de pensamiento largo: filosofía, educación, mundo editorial e inteligencia artificial.
 
 La documentación de fondo está en `spec/`. La constitución (`spec/constitution/`) manda: si una feature entra en conflicto con `mission.md` o `tech-stack.md`, se replantea la feature, **no** la constitución.
 
@@ -35,10 +35,10 @@ Todos desde la raíz del proyecto.
 ## Convenciones
 
 - Posts: archivos `.md` en `src/content/posts/`. Nombre en `kebab-case-en-espanol.md`. Sin prefijos numéricos, sin fechas en el nombre.
-- Frontmatter en YAML. Schema en `src/content/config.ts`.
+- Frontmatter en YAML. Schema y loader en `src/content.config.ts`.
 - Idioma del código: identificadores en inglés. Mensajes, commits y documentación en español.
 - Commits: conventional commits en español cuando aporten claridad (`docs:`, `feat:`, `fix:`, `chore:`).
-- Tipografía: una serif para el cuerpo, sans-serif del sistema para la UI. Decisión final en feature 000.
+- Tipografía: Newsreader para lectura; monoespaciada para metadatos. La monoespaciada final y la carga de fuentes se deciden en feature 000.
 
 ## No hagas
 

@@ -1,58 +1,76 @@
 # blog-personal
 
-Blog personal de Camilo Moreno. Posts largos en español sobre educación, filosofía, corrección de estilo y oficio docente.
+Blog personal de Camilo Moreno: pensamiento largo en español sobre filosofía, educación, mundo editorial e inteligencia artificial.
 
-**Stack:** Astro 5 (estático) + TypeScript estricto + pnpm. Despliegue en Hostinger.
+## Identidad
 
-## Estructura
+El proyecto combina un **archivo editorial sereno** con **acentos retrofuturistas**. La lectura es la prioridad; la línea cronológica —la “línea del pensamiento”— organiza el archivo y funciona como firma visual.
 
-```
-blog-personal/
-├── spec/                   ← documentación spec-driven (constitución + features)
-│   ├── constitution/       ← mission.md, tech-stack.md, roadmap.md
-│   ├── features/           ← una carpeta por feature (spec.md, plan.md, tasks.md)
-│   ├── backlog/            ← ideas sin priorizar
-│   ├── archive/            ← features absorbidas o finalizadas
-│   ├── diseno/             ← índice del material de referencia visual
-│   ├── bitacora.md         ← entradas por sesión de trabajo
-│   └── deuda-tecnica.md    ← atajos registrados a propósito
-├── referente-de-diseno/    ← material de referencia heredado (no es parte del blog)
-└── [src/, public/, ...]    ← código del blog, por crear en feature 000
-```
+La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/direccion-visual.md). El material heredado de `referente-de-diseno/` se conserva como consulta, no se copia a producción y no forma parte del build.
 
-## Estado actual
+## Stack decidido
 
-- **Feature 000** (proyecto base) — propuesta, sin implementar.
-- **Feature 001** (sistema de posts) — propuesta, depende de la 000.
+- Astro 5.x fijado a una versión exacta.
+- TypeScript estricto.
+- Content Layer con posts Markdown.
+- pnpm.
+- CSS plano.
+- Sitio completamente estático.
+- Despliegue previsto en Hostinger.
 
-El estado detallado de cada feature está en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
+## Estado
+
+La base visual y técnica ya está implementada.
+
+1. **000 · Fundamento visual y técnico** — implementada.
+2. **001 · Núcleo editorial publicable** — siguiente.
+3. **002 · Índice, archivo y temas** — propuesta.
+4. **003 · Distribución e indexación** — propuesta.
+5. **004 · Despliegue en Hostinger** — propuesta.
+
+Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
+
+## Temas editoriales
+
+- Filosofía.
+- Educación, incluido el oficio docente.
+- Mundo editorial.
+- Inteligencia artificial.
+- General.
 
 ## Comandos
 
-Una vez implementada la feature 000:
+- `pnpm install`
+- `pnpm dev`
+- `pnpm build`
+- `pnpm preview`
+- `pnpm lint`
+- `pnpm astro check`
 
-- `pnpm install` — instala dependencias.
-- `pnpm dev` — servidor local en `http://localhost:4321`.
-- `pnpm build` — genera el sitio estático en `dist/`.
-- `pnpm preview` — sirve `dist/` localmente.
-- `pnpm lint` — corre ESLint.
-- `pnpm astro check` — validación de tipos.
+## Estructura actual
 
-## Documentación
+```text
+src/
+├── components/         navegación y footer
+├── layouts/            layout raíz y metadatos globales
+├── pages/              índice y página «Sobre»
+└── styles/             tokens y estilos globales
 
-- `spec/constitution/mission.md` — qué es el blog y para quién.
-- `spec/constitution/tech-stack.md` — stack, convenciones y límites.
-- `spec/constitution/roadmap.md` — orden de las features.
-- `spec/features/NNN-…/spec.md` — qué hace cada feature.
-- `spec/features/NNN-…/plan.md` — cómo se implementa.
-- `spec/bitacora.md` — registro de sesiones de trabajo.
+public/                 assets estáticos
+spec/                   constitución, diseño, features y bitácora
+referente-de-diseno/    archivo histórico; fuera del build
+```
 
-## Prerrequisitos
+## Principios
+
+- El texto es el producto.
+- Escribir un post debe requerir solo Markdown y un commit.
+- Archivo antes que algoritmo.
+- Sin CMS, base de datos, login ni analítica invasiva.
+- La licencia del contenido es **CC BY-NC 4.0**.
+
+## Prerrequisitos previstos
 
 - Node 22 LTS.
-- pnpm (`npm install -g pnpm`).
-- Git configurado para `github.com/Riskbreaker2077/blog-personal`.
-
-## Origen
-
-Creado el 31 de julio de 2026. El referente de diseño (`referente-de-diseno/`) viene de un ZIP entregado por Camilo con un prototipo visual previo y un esqueleto Astro. Se conservó como consulta, no como base de copia.
+- pnpm.
+- Git.

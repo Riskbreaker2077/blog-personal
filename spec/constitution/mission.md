@@ -4,14 +4,14 @@ _Define la razón de ser del proyecto. Es la referencia que decide si una featur
 
 ## Qué construimos
 
-Un blog personal estático con Astro, escrito en español, donde Camilo publica textos breves y largos sobre educación, filosofía, corrección de estilo y oficio docente. Es la "capa pública" de un espacio más amplio (`camilomoreno.co` ya hospeda la corrección; este blog es el canal de pensamiento largo y archivo).
+Un blog personal estático con Astro, escrito en español, donde Camilo publica textos breves y largos sobre filosofía, educación, inteligencia artificial y el mundo editorial. Es la "capa pública" de un espacio más amplio (`camilomoreno.co` ya hospeda la corrección; este blog es el canal de pensamiento largo y archivo).
 
 _Piezas principales del producto:_
 
 1. **Listado de posts** — página de inicio y archivo cronológico navegable.
 2. **Páginas de post** — una URL por texto, legible, compartible, con metadatos (fecha, tema, tiempo de lectura).
 3. **Página "Sobre mí"** — quién escribe, desde dónde, con qué intención.
-4. **Sistema de temas / series** — agrupación opcional por línea temática para que el lector encuentre textos afines.
+4. **Sistema de temas** — agrupación por cinco líneas editoriales estables para que el lector encuentre textos afines.
 
 ## Para quién
 

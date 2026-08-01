@@ -14,11 +14,12 @@ El referente vive en `../referente-de-diseno/` (un nivel arriba de esta carpeta)
 - **Para inspirarse en la estructura**, mirar `referente-de-diseno/astro-base/`. Sirve de mapa mental de qué archivos existen en un proyecto Astro.
 - **Para validar decisiones de UI** (paleta, layout, tipografía), mirar las imágenes en `referente-de-diseno/prototipo-visual/uploads/`.
 - **Para entender decisiones de interacción** (cómo se ve un slider de "tweaks", cómo se navega entre pantallas), mirar `prototipo-visual/Blog.html` y los `.jsx`.
+- **Como dirección aprobada**, consultar [`direccion-visual.md`](direccion-visual.md), que traduce el referente a reglas de producción.
 
 ## Lo que NO se hace
 
 - No se copia código del referente directamente a `src/`. Si algo se reutiliza, se reescribe limpio.
-- No se incluye `referente-de-diseno/` en el build. El `.gitignore` lo excluye.
+- No se incluye `referente-de-diseno/` en el build. Permanece versionado y no se añade a `.gitignore`; producción simplemente no lo importa ni lo copia.
 - No se editan los archivos del referente como parte del trabajo de una feature. El referente es solo lectura.
 
 ## Notas

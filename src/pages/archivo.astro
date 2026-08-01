@@ -1,0 +1,179 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ENTRADAS_ANUNCIADAS, TEMAS, type TemaId } from "../data/temas";
+
+const temas = Object.entries(TEMAS) as [TemaId, (typeof TEMAS)[TemaId]][];
+---
+
+<BaseLayout
+  title="Archivo — Camilo Moreno"
+  description="Archivo cronológico de la bitácora de Camilo Moreno."
+>
+  <header class="archive-head">
+    <h1>Archivo <em>cronológico</em>.</h1>
+    <p>Todas las entradas, de la más reciente a la más antigua.</p>
+  </header>
+
+  <section class="empty" aria-labelledby="empty-title">
+    <p class="yr">2026</p>
+    <div>
+      <h2 id="empty-title">Todavía no hay entradas publicadas.</h2>
+      <p>
+        El archivo se llena solo: cada texto publicado aparecerá aquí agrupado
+        por año. Por ahora hay {ENTRADAS_ANUNCIADAS.length} en camino, anunciadas
+        en <a href="/">el índice</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="temas" aria-labelledby="temas-title">
+    <h2 id="temas-title">Temas previstos</h2>
+    <ul>
+      {
+        temas.map(([id, tema]) => (
+          <li data-tone={tema.tono}>
+            <span class="dot" aria-hidden="true" />
+            {tema.label}
+            <span class="short">{id}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-head {
+    max-width: 45rem;
+    margin-bottom: 3rem;
+  }
+
+  .archive-head h1 {
+    margin: 0 0 0.875rem;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .archive-head h1 em {
+    color: var(--accent);
+  }
+
+  .archive-head p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .empty {
+    display: grid;
+    grid-template-columns: var(--rail) 1fr;
+    gap: var(--rail-gap);
+    padding-bottom: 3rem;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .yr {
+    margin: 0;
+    padding-top: 4px;
+    color: var(--muted);
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .empty h2 {
+    margin: 0 0 0.625rem;
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .empty p {
+    max-width: var(--max-content);
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+    opacity: 0.85;
+  }
+
+  .empty a {
+    color: var(--accent);
+    text-underline-offset: 0.25em;
+  }
+
+  .temas {
+    margin-top: 2.5rem;
+  }
+
+  .temas h2 {
+    margin: 0 0 1.125rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 5px 10px 5px 9px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--muted-2);
+  }
+
+  li[data-tone="accent"] .dot {
+    background: var(--tone-accent);
+  }
+
+  li[data-tone="gold"] .dot {
+    background: var(--tone-gold);
+  }
+
+  li[data-tone="ink"] .dot {
+    background: var(--tone-ink);
+  }
+
+  li[data-tone="peri"] .dot {
+    background: var(--tone-peri);
+  }
+
+  .short {
+    color: var(--muted-2);
+    text-transform: none;
+  }
+
+  @media (max-width: 43.75rem) {
+    .empty {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+</style>
