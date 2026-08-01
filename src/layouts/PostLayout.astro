@@ -1,0 +1,354 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "./BaseLayout.astro";
+import { TEMAS } from "../data/temas";
+import { formatearFecha, type Post } from "../lib/posts";
+
+interface Props {
+  post: Post;
+  tiempo: number;
+  anterior?: Post;
+  siguiente?: Post;
+}
+
+const { post, tiempo, anterior, siguiente } = Astro.props;
+const { title, description, pubDate, updatedDate, topic, draft, cover } =
+  post.data;
+const tema = TEMAS[topic];
+---
+
+<BaseLayout title={`${title} — Camilo Moreno`} description={description}>
+  <article class="post">
+    <a class="back-link" href="/">← volver al índice</a>
+
+    <header class="post-head">
+      <p class="post-eyebrow">
+        <span class="pill" data-tone={tema.tono}>{tema.label}</span>
+        <time datetime={pubDate}>{formatearFecha(pubDate)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{tiempo} min de lectura</span>
+        {draft && <span class="draft">borrador</span>}
+      </p>
+
+      <h1 class="post-title">{title}</h1>
+      <p class="post-lede">{description}</p>
+
+      {
+        updatedDate && (
+          <p class="post-updated">
+            Actualizado el <time datetime={updatedDate}>{formatearFecha(updatedDate)}</time>
+          </p>
+        )
+      }
+    </header>
+
+    {
+      cover && (
+        <figure class="post-cover">
+          <div class="img-frame">
+            <Image src={cover.src} alt={cover.alt} widths={[480, 800, 1200]} />
+          </div>
+          <figcaption class="img-caption">{cover.alt}</figcaption>
+        </figure>
+      )
+    }
+
+    <div class="post-body">
+      <slot />
+    </div>
+
+    <footer class="post-foot">
+      <div>
+        {
+          anterior && (
+            <a href={`/posts/${anterior.id}/`} rel="prev">
+              ← {anterior.data.title}
+            </a>
+          )
+        }
+      </div>
+      <div class="siguiente">
+        {
+          siguiente && (
+            <a href={`/posts/${siguiente.id}/`} rel="next">
+              {siguiente.data.title} →
+            </a>
+          )
+        }
+      </div>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post {
+    position: relative;
+    max-width: var(--max-content);
+    margin-inline: auto;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      color 0.2s,
+      gap 0.2s;
+  }
+
+  .back-link:hover {
+    gap: 0.75rem;
+    color: var(--accent);
+  }
+
+  .post-head {
+    margin-bottom: 3rem;
+  }
+
+  .post-eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.875rem;
+    margin: 0 0 1.375rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .pill {
+    padding: 3px 9px;
+    border: 1px solid currentcolor;
+    border-radius: 999px;
+  }
+
+  .pill[data-tone="accent"] {
+    color: var(--accent);
+  }
+
+  .pill[data-tone="gold"] {
+    color: var(--gold);
+  }
+
+  .pill[data-tone="ink"] {
+    color: var(--teal);
+  }
+
+  .pill[data-tone="peri"] {
+    color: var(--coffee);
+  }
+
+  .draft {
+    padding: 3px 9px;
+    border: 1px dashed var(--muted-2);
+    border-radius: 999px;
+  }
+
+  .post-title {
+    margin: 0 0 1.125rem;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 2.9rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .post-lede {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 1.22rem;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .post-updated {
+    margin: 1.125rem 0 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .post-cover {
+    margin: 0 0 2.75rem;
+  }
+
+  .post-cover :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 9px;
+  }
+
+  /* ── Cuerpo del texto ───────────────────────────── */
+  .post-body {
+    font-size: 1.06rem;
+  }
+
+  .post-body :global(p) {
+    margin: 0 0 1.2em;
+  }
+
+  .post-body :global(> p:first-child::first-letter) {
+    float: left;
+    padding: 6px 10px 0 0;
+    color: var(--accent);
+    font-family: var(--font-serif);
+    font-size: 3.4em;
+    font-weight: 500;
+    line-height: 0.9;
+  }
+
+  .post-body :global(h2) {
+    position: relative;
+    margin: 3.5rem 0 1.125rem;
+    font-family: var(--font-serif);
+    font-size: 1.55rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .post-body :global(h2::before) {
+    position: absolute;
+    left: -1.75rem;
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 400;
+    content: "§";
+  }
+
+  .post-body :global(h3) {
+    margin: 2.5rem 0 0.875rem;
+    font-family: var(--font-serif);
+    font-size: 1.22rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .post-body :global(blockquote) {
+    margin: 2.5rem 0;
+    padding: 1rem 0 1rem 1.5rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.32rem;
+    font-style: italic;
+    line-height: 1.35;
+  }
+
+  .post-body :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: 0 0 1.2em;
+    padding-left: 1.25rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.5em;
+  }
+
+  .post-body :global(a) {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+  }
+
+  .post-body :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 2.75rem 0;
+    border-radius: 9px;
+  }
+
+  .post-body :global(hr) {
+    margin: 3rem 0;
+    border: 0;
+    border-top: 1px dashed var(--rule);
+  }
+
+  .post-body :global(code) {
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+    background: var(--cream-2);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  .post-body :global(pre) {
+    margin: 2rem 0;
+    padding: 1rem 1.125rem;
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+
+  .post-body :global(pre code) {
+    padding: 0;
+    background: none;
+  }
+
+  .post-body :global(table) {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .post-body :global(th),
+  .post-body :global(td) {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+  }
+
+  /* ── Pie ────────────────────────────────────────── */
+  .post-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .post-foot a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .post-foot a:hover {
+    color: var(--accent);
+  }
+
+  .siguiente {
+    text-align: right;
+  }
+
+  @media (max-width: 48rem) {
+    .post-body :global(h2::before) {
+      display: none;
+    }
+  }
+</style>

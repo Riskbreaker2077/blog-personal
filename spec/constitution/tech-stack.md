@@ -19,11 +19,12 @@ _Mapa breve de dónde vive cada cosa. Solo lo que un recién llegado necesita pa
 
 - `astro.config.mjs` — configuración de Astro. Define `site` (URL canónica), integraciones, y opciones de build.
 - `src/content.config.ts` — configuración moderna de la Content Layer: loader local y schema de los posts.
-- `src/content/posts/` — todos los posts en `.md` o `.mdx`. Un archivo por post.
+- `src/content/posts/` — todos los posts en `.md`. Un archivo por post.
 - `src/layouts/BaseLayout.astro` — layout raíz. Define `<head>`, metadatos, tipografía, contenedor.
 - `src/pages/index.astro` — landing: lista de los posts más recientes.
 - `src/pages/archivo.astro` — archivo cronológico completo.
-- `src/pages/posts/[...slug].astro` — ruta dinámica que renderiza un post desde su slug.
+- `src/pages/posts/[...id].astro` — ruta dinámica que renderiza un post desde su `id` (nombre del archivo).
+- `src/lib/posts.ts` — helpers de posts: publicados vs. borradores, orden, fechas civiles y tiempo de lectura.
 - `src/pages/sobre.astro` — página "Sobre mí".
 - `src/styles/global.css` — tokens de diseño (colores, tipografía, espaciado) y estilos base.
 - `src/components/Topbar.astro` — navegación superior.
@@ -50,16 +51,16 @@ _Entidad central del blog._
 - **Post** — unidad de contenido.
   - `title` (string, requerido) — título legible.
   - `description` (string, requerido) — bajada o resumen de 1-2 frases. Aparece en listados y metadatos.
-  - `pubDate` (Date, requerido) — fecha de publicación. Determina el orden cronológico.
-  - `updatedDate` (Date, opcional) — última fecha de actualización material del contenido. Si existe, se muestra junto a "Actualizado el …".
+  - `pubDate` (fecha civil `AAAA-MM-DD`, requerido) — fecha de publicación. Determina el orden cronológico. Se guarda como cadena, no como `Date`, para que ninguna zona horaria la desplace un día.
+  - `updatedDate` (fecha civil, opcional) — última fecha de actualización material del contenido. Si existe, se muestra junto a "Actualizado el …".
   - `topic` (enum, requerido) — uno de: `filosofia`, `educacion`, `mundo-editorial`, `inteligencia-artificial`, `general`.
   - `draft` (boolean, default `false`) — si es `true`, el post no se incluye en el build de producción.
-  - `slug` — derivado del nombre del archivo, lo gestiona Astro.
+  - `id` — derivado del nombre del archivo, lo gestiona el loader `glob()` de Astro.
 
 ## Convenciones
 
 - Nombres de archivos de post: `kebab-case-en-espanol.md`. Sin prefijos numéricos, sin fechas en el nombre. La fecha va en el frontmatter.
-- Frontmatter en YAML.
+- Frontmatter en YAML. Las fechas se escriben `AAAA-MM-DD`, con o sin comillas: el schema normaliza ambas formas.
 - Contenido en español, sin tildes ni ortografía sacrificadas por el slug (el slug es legible: `aula-como-espacio-fenomenologico.md`, no `aula-como-espacio-fenomenolgco`).
 - Una línea en blanco separa párrafos. Sin HTML dentro del `.md` salvo que sea estrictamente necesario; si lo es, se comenta por qué.
 - Citas largas en blockquote con `>`. Itálicas para títulos de obras (`_Ser y tiempo_`).

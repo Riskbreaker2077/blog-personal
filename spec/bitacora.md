@@ -2,6 +2,34 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-07-31 · Sesión 5 — Núcleo editorial publicable (feature 001)
+
+**Qué se hizo**
+
+- `src/content.config.ts` con loader `glob()` y schema estricto: `title`, `description`, `pubDate`, `updatedDate`, `topic`, `draft` y `cover` con `alt` obligatorio.
+- `src/lib/posts.ts` con el filtro único de publicados vs. borradores, orden cronológico, formato de fechas y tiempo de lectura.
+- `PostLayout.astro` portado del `PostScreen` del prototipo: cintillo con píldora de tema, título, bajada, portada opcional, capitular, calderón en los `h2`, citas destacadas y pie con anterior/siguiente.
+- Ruta `src/pages/posts/[...id].astro`.
+- Borrador técnico `prueba-de-maquetacion.md` para validar Markdown representativo.
+- Documentación al día: `tech-stack.md`, `README.md` (incluida la guía «Escribir un post»), roadmap y tareas de la 001.
+
+**Verificación**
+
+- Build con el borrador publicado temporalmente: la ruta se genera, la fecha civil sale correcta (`31 de julio de 2026`, sin desplazamiento por zona horaria), el tiempo de lectura calcula 2 min y el Markdown completo se renderiza.
+- Build con el borrador restaurado: 3 páginas, ninguna ruta bajo `dist/posts/`.
+- `astro check`: 0 errores, 0 avisos. ESLint: limpio.
+
+**Pendiente**
+
+- **Primer texto editorial real**: lo escribe Camilo. Hasta entonces el criterio «un texto real se publica en `/posts/<id>`» queda abierto y la 001 no se cierra del todo.
+- Un post publicado todavía no aparece en portada ni en archivo: eso es la feature 002.
+
+**Decisiones**
+
+- Las fechas se modelan como cadena `AAAA-MM-DD`, no como `Date`: un `Date` desde `2026-07-31` es medianoche UTC y en Bogotá retrocede al día 30. El schema acepta la fecha con y sin comillas en YAML y normaliza.
+- El tiempo de lectura es una aproximación declarada: 200 palabras por minuto sobre el texto sin sintaxis Markdown.
+- La visibilidad de borradores se decide en un solo punto (`obtenerPosts`), para que listados y rutas no puedan divergir.
+
 ## 2026-07-31 · Sesión 4 — Adopción del prototipo de Claude Design
 
 **Qué se hizo**

@@ -20,11 +20,11 @@ La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/
 
 ## Estado
 
-La base visual y técnica ya está implementada.
+La base visual y el núcleo editorial ya están implementados; falta publicar el primer texto real.
 
 1. **000 · Fundamento visual y técnico** — implementada.
-2. **001 · Núcleo editorial publicable** — siguiente.
-3. **002 · Índice, archivo y temas** — propuesta.
+2. **001 · Núcleo editorial publicable** — implementada salvo el primer texto real.
+3. **002 · Índice, archivo y temas** — siguiente.
 4. **003 · Distribución e indexación** — propuesta.
 5. **004 · Despliegue en Hostinger** — propuesta.
 
@@ -52,14 +52,24 @@ Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadma
 ```text
 src/
 ├── components/         navegación y footer
-├── layouts/            layout raíz y metadatos globales
-├── pages/              índice y página «Sobre»
+├── content/posts/      posts en Markdown
+├── data/               temas editoriales y sus tonos
+├── layouts/            layout raíz y layout de lectura
+├── lib/                helpers de posts, fechas y tiempo de lectura
+├── pages/              índice, archivo, «Sobre» y la ruta /posts/<id>/
 └── styles/             tokens y estilos globales
 
 public/                 assets estáticos
 spec/                   constitución, diseño, features y bitácora
 referente-de-diseno/    archivo histórico; fuera del build
 ```
+
+## Escribir un post
+
+1. Crea `src/content/posts/nombre-legible.md`.
+2. Frontmatter mínimo: `title`, `description`, `pubDate` (`AAAA-MM-DD`) y `topic`.
+3. Opcionales: `updatedDate`, `cover` (con `alt` obligatorio) y `draft: true`.
+4. Un borrador se ve en `pnpm dev` y no genera HTML en producción.
 
 ## Principios
 
