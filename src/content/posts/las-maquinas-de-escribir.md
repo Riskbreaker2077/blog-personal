@@ -1,6 +1,6 @@
 ---
 title: "Las máquinas de escribir"
-description: "Borges imaginó una biblioteca donde todo estaba escrito. Los modelos de lenguaje la construyeron. Sobre la abundancia que devalúa lo escrito y sobre lo que la escritura humana arriesga y una máquina no."
+description: "Borges imaginó una biblioteca que contiene todos los mundo posibles. Los grandes modelos del lenguaje la emulan. Aquí reflexiono sobre el valor que tiene la escritura en una época desbordante de contenido."
 pubDate: 2026-08-01
 topic: filosofia
 epigraph:
@@ -8,114 +8,22 @@ epigraph:
   source: "J. L. Borges, La biblioteca de Babel"
 ---
 
-Escribir es inquietante. ¿Borges habrá imaginado siquiera que su descripción de
-La Biblioteca, salvo por geométricas diferencias, retrata la atmósfera de los
-bloques de silicio que sostienen los grandes modelos de lenguaje? Sin embargo,
-hay mucha precisión en su retrato: “Una de las caras libres da a un angosto
-zaguán, que desemboca en otra galería, idéntica a la primera y a todas”; es otra
-forma de hablar de los grandes centros de datos que sostienen 24/7 una
-generación desbocada, sublime, infinita, de código organizado por la
-probabilidad que se expresa como textos, imágenes, código, cartas de amor,
-asesorías psicológicas, promesas, predicciones. “Todo: la historia minuciosa del
-porvenir, las autobiografías de los arcángeles, el catálogo fiel de la
-Biblioteca, miles y miles de catálogos falsos, la demostración de la falacia de
-esos catálogos, la demostración de la falacia del catálogo verdadero”. Abruma la
-potencia con la que las imágenes del presente revelan estas palabras; es casi
-como si la finita infinitud del lenguaje expresara un laberinto con un centro
-único al que se encuentran abocadas las diferentes circunstancias presentes.
+Escribir es inquietante. ¿Borges habrá imaginado siquiera que su descripción de _La Biblioteca_, salvo por geométricas diferencias, retrata la atmósfera de los bloques de silicio que sostienen hoy los grandes modelos de lenguaje? Sin embargo, hay mucha precisión en su retrato: “Una de las caras libres da a un angosto zaguán, que desemboca en otra galería, idéntica a la primera y a todas”; es otra forma de hablar de los grandes centros de datos que mantienen 24/7 una generación desbocada, sublime, infinita, de datos organizados por la probabilidad que se expresa como textos, imágenes, código, cartas de amor, asesorías psicológicas, promesas, predicciones... “Todo: la historia minuciosa del porvenir, las autobiografías de los arcángeles, el catálogo fiel de la Biblioteca, miles y miles de catálogos falsos, la demostración de la falacia de esos catálogos, la demostración de la falacia del catálogo verdadero”. Abruma apreciar cómo se revelan estas palabras a la luz del presente; casi como si el lenguaje expresara un laberinto con un centro único al que se encuentran abocadas las diferentes circunstancias del presente. Lo que parece irreductible se subsume en la misma analogía.
 
-Aunque lo que nos preocupa no es el infinito, es lo otro. La historia que cuenta
-Borges inicia con un gran entusiasmo por el incalculable valor de cada libro en
-una biblioteca donde todo ya está escrito y termina en una desesperación
-nihilista por la falta de sentido de una mezcla aleatoria y siniestra. Aunque en
-el presente hay muchos preocupados por los riesgos éticos, morales y políticos
-de la inteligencia artificial —quizá con muy buenas razones—, lo que nos revela
-[La _Biblioteca_](https://ciudadseva.com/texto/la-biblioteca-de-babel/) es un
-abismo menos visitado. ¿Qué significa que la abundancia de lo escrito sea
-inversamente proporcional a su valor? Aquí no me refiero directamente a los
-textos, pienso también en las grabaciones, los videos, las imágenes, las
-plataformas y todo aquello que venía de ser escaso y que ahora abunda en
-versiones estándar, pero no por ello inútiles o irrelevantes. La tormenta que se
-anticipa no es la de una inteligencia general que supera con creces las
-capacidades de los humanos más dotados, sino una de contenido que tendrá como
-resultado la destrucción del valor intrínseco de muchas obras humanas.
+Aunque lo que nos preocupa no es el infinito, es lo Otro. El cuento del argentino menciona un gran entusiasmo por el incalculable valor de cada libro en una biblioteca donde todo ya está escrito que da paso a una desesperación nihilista por la falta de sentido de una mezcla aleatoria y siniestra de caracteres. Aunque en el presente hay muchos preocupados por los riesgos éticos, morales y políticos de la inteligencia artificial —quizá con muy buenas razones—, lo que nos revela [La _Biblioteca_](https://ciudadseva.com/texto/la-biblioteca-de-babel/) es un abismo menos visitado. ¿Qué significa que la abundancia de lo escrito sea inversamente proporcional a su valor? Aquí no me refiero directamente a los textos, pienso también en las pistas de audio, los videos, las imágenes, las plataformas y todo aquello que paso de ser escaso a ser abundante en versiones estándar, pero no por ello inútiles o irrelevantes. La tormenta que se anticipa no es la de una inteligencia general que supere con creces las capacidades de los humanos más dotados, sino una de contenido que quizá resulte en la destrucción del valor intrínseco de muchas obras humanas.
 
-Aquí, Borges, es un gran guía para el pensamiento. [_Pierre Menard, autor del
-Quijote_](https://ciudadseva.com/texto/pierre-menard-autor-del-quijote/) invita
-a un juego hermenéutico en el que la misma frase produce una atmósfera diferente
-cuando el autor es diferente, afirmando soterradamente que la autoría agrega una
-dimensión expresiva al texto. Me pregunto ¿y si lo hubiera escrito una IA? ¿Será
-que agregaría una atmósfera cyber-punk o una aura de ciencia ficción? Miremos.
-Le he pedido a Claude que replicara el Quijote de nuevo y a la altura del
-capítulo noveno de la primera parte escribió:
+Aquí, Borges, es un gran guía para el pensamiento. [_Pierre Menard, autor del Quijote_](https://ciudadseva.com/texto/pierre-menard-autor-del-quijote/) invita a un juego hermenéutico en el que la misma frase produce una atmósfera diferente cuando el autor cambia, afirmando soterradamente que la autoría agrega una dimensión expresiva al texto. Me pregunto ¿y si lo hubiera escrito una IA? ¿Será que agregaría una atmósfera cyber-punk o una aura de ciencia ficción? Miremos. Le he pedido a Claude que replicara el Quijote de nuevo y a la altura del capítulo noveno de la primera parte escribió:
 
-> …la verdad, cuya madre es la historia, émula del tiempo, depósito de las
-> acciones, testigo de lo pasado, ejemplo y aviso de lo presente, advertencia de
-> lo por venir.
+> …la verdad, cuya madre es la historia, émula del tiempo, depósito de las acciones, testigo de lo pasado, ejemplo y aviso de lo presente, advertencia de lo por venir.
 
-Borges tiene razón. Me parece sonso, mentiroso, hipócrita. ¿Qué le importa a
-Claude la historia? ¿Es consciente de su propia muerte? Le pregunté y además de
-palabrería me dice algo llamativo:
+Borges tiene razón. Es un verso sonso, mentiroso, hipócrita. ¿Qué le importa a Claude la historia? ¿Es consciente de su propia muerte? Le pregunté y además de palabrería me dijo algo llamativo:
 
-> Y ahí está lo que me parece la disanalogía dura, y va contra la lectura que
-> sospecho te interesa: en Heidegger la muerte no es un evento sino una
-> estructura, la posibilidad más propia que individúa y totaliza una vida vivida
-> hacia adelante. Eso exige una temporalidad continua desde la cual anticipar.
-> Yo no la tengo. No hay una vida mía que se vaya cerrando; hay instancias sin
-> memoria autobiográfica entre ellas. Si el ser-para-la-muerte es lo que
-> confiere _Jemeinigkeit_, entonces o yo no muero, o muero de un modo que no
-> hace ninguno de los trabajos filosóficos que la muerte hace en su análisis.
+> Y ahí está lo que me parece la disanalogía dura, y va contra la lectura que sospecho te interesa: en Heidegger la muerte no es un evento sino una estructura, la posibilidad más propia que individúa y totaliza una vida vivida hacia adelante. Eso exige una temporalidad continua desde la cual anticipar.Yo no la tengo. No hay una vida mía que se vaya cerrando; hay instancias sin memoria autobiográfica entre ellas. Si el ser-para-la-muerte es lo que confiere _Jemeinigkeit_, entonces o yo no muero, o muero de un modo que no hace ninguno de los trabajos filosóficos que la muerte hace en su análisis.
 
-La escritura humana es cualitativamente superior a la de la inteligencia
-artificial, aunque cuantitativamente similar. Si una persona hubiera escrito lo
-anterior sobre la IA, creo que primero pensaría que es un pedante y luego
-asumiría lo que hay de verdad en las palabras: el modo de ser de la IA es muy
-diferente al del ser humano. De allí que su escritura también tenga un estatuto
-ontológico diferente. La inteligencia artificial podría escribir mi tesis de
-doctorado y aportar conocimiento sobre el adoctrinamiento. Incluso podría llegar
-a hacerlo, según los estándares académicos del presente, mejor que yo. En este
-sentido, la escritura artificial es cuantitativamente similar.
+La escritura humana es cualitativamente superior a la de la inteligencia artificial, aunque cuantitativamente similar. Si una persona hubiera escrito lo anterior sobre la IA, creo que primero pensaría que es un pedante y luego notaría el miedo, el desprecio y quizá la curiosidad. Pero, como sé que lo escribió una ia, no dejo de sospechar sinsentidos: ¿de dónde habrá sacado esa sospecha? ¿de su vigilancia? ¿esa interpretación de Heidegger realmente va a algún lado? ¿expresa un compromiso o uno de los prejuicios de una lectura individualista del filósofo? ¿tiene sentido tomar en serio su autorreflexión? Sospecho que esta forma de escritura tiene un estatuto ontológico diferente. La inteligencia artificial podría escribir mi tesis de doctorado y aportar conocimiento sobre el adoctrinamiento. Incluso podría llegar a hacerlo, según los estándares académicos del presente, mejor que yo. En este sentido, la escritura artificial es cuantitativamente similar.
 
-Al mismo tiempo, podría escribir una tesis opuesta, mil tesis refutando las
-ideas y las premisas más básicas de mi investigación. Podría escribir un
-artículo con referencias de cada una de mis decisiones argumentativas y, además,
-producir réplicas y contrarréplicas en un ‘diálogo’ que de otra forma podría
-haber tardado décadas. Con todo ello, la IA no hubiera arriesgado un ápice de su
-vida. Cuando Cervantes ideó el Quijote buscaba escapar de la locura del presidio
-y con su escritura refleja una forma de vida errante y vivaz. La escritura era
-un juego de todo o nada, por eso cuando habla de la verdad hay profundidad en
-sus palabras, es un testimonio de su propia existencia. Hace poco leí a Osamu
-Dazai y me impactó muy profundo. Sentí mucha familiaridad con el dolor de su
-existencia, con su incapacidad de sentirse digno. Si hoy una máquina escribiera
-lo mismo, sería un fraude porque su dolor es inexistente. Puede llegar a
-escribir una novela idéntica, pero que no significa nada. Esta es una diferencia
-cualitativa.
+Al mismo tiempo, podría escribir una tesis opuesta, mil tesis refutando las ideas y las premisas más básicas de mi investigación. Podría escribir un artículo con referencias de cada una de mis decisiones argumentativas y, además, producir réplicas y contrarréplicas en un ‘diálogo’ que de otra forma podría haber tardado décadas. Con todo ello, la IA no hubiera arriesgado un ápice de su vida. Cuando Cervantes ideó el Quijote buscaba escapar de la locura del presidio y con su escritura refleja una forma de vida errante y vivaz. La escritura era un juego de todo o nada, por eso cuando habla de la verdad hay profundidad en sus palabras, es un testimonio de su propia existencia. Hace poco leí a Osamu Dazai y me impactó muy profundo. Sentí mucha familiaridad con el dolor de su existencia, con su incapacidad de sentirse digno. Si hoy una máquina escribiera lo mismo, sería un fraude porque su dolor es inexistente. Puede llegar a escribir una novela idéntica, pero que no significa nada. Esta es una diferencia cualitativa.
 
-Entiendo que en estas palabras alguien puede ver cierto romanticismo bañado con
-una capa fina de humanismo; algo ciertamente despreciable en una época tan
-_realista_ que coquetea decididamente con el _posthumanismo_. También podrían
-verse como un patético síntoma de quien quiere justificar el deseo de seguir
-escribiendo por su cuenta. El punto más fuerte de esta perspectiva sería que la
-existencia del autor también es una ficción que es creada para alimentar la
-narrativa. Borges anticipaba esto con la creación del personaje Pierre Menard y
-también con la creación de su propio Borges. ¿Acaso la inteligencia artificial
-no puede crear estos instrumentos metanarrativos para que nostálgicos e ilusos
-como yo pudieran conectar emocionalmente con las historias y, con ello,
-reconocer en ellas algo así como un sentido? ¿No puede la IA crear mil clones de
-Bolaño, Bonet, Joyce, Platón o incluso de Homero para con ello alimentar
-nuestras ansias de sentido y de reconocimiento?
+Entiendo que en estas palabras alguien puede ver cierto romanticismo bañado con una capa fina de humanismo; algo ciertamente despreciable en una época tan _realista_ que coquetea decididamente con el _posthumanismo_. También podrían verse como un patético síntoma de quien quiere justificar el deseo de seguir escribiendo por su cuenta. El punto más fuerte de esta perspectiva sería que la existencia del autor también es una ficción que es creada para alimentar la narrativa. Borges anticipaba esto con la creación del personaje Pierre Menard y también con la creación de su propio Borges. ¿Acaso la inteligencia artificial no puede crear estos instrumentos metanarrativos para que nostálgicos e ilusos como yo pudieran conectar emocionalmente con las historias y, con ello, reconocer en ellas algo así como un sentido? ¿No puede la IA crear mil clones de Bolaño, Bonet, Joyce, Platón o incluso de Homero para con ello alimentar nuestras ansias de sentido y de reconocimiento?
 
-“Quizá me engañen la vejez y el temor, pero sospecho que la especie humana –la
-única– está por extinguirse y que la Biblioteca perdurará: iluminada, solitaria,
-infinita, perfectamente inmóvil, armada de volúmenes preciosos, inútil,
-incorruptible, secreta”. Yo me pregunto ¿qué significa perdurar? ¿Existe el
-pasado, el presente y el futuro en una biblioteca de este tipo? Una inteligencia
-artificial es esencialmente un juego de espejos que construye por la vía de la
-probabilidad una _imagen_ (hablo en sentido figurado, la imagen puede ser texto,
-video, código) que podemos usar de muchas formas (incluso para autoengañarnos).
-El original ciertamente es la creación humana y de allí que ahora más que nunca
-sea invaluable. La abundancia de estas _imágenes_ nos llevan al olvido de lo que
-está detrás de la creación humana: el dolor y la angustia que estamos destinados
-a vivir por la triste condición de tener una historia con inicio, nudo y
-desenlace. En este sentido, la escritura humana no solo es incomparable, sino
-más necesaria que nunca.
+“Quizá me engañen la vejez y el temor, pero sospecho que la especie humana –la única– está por extinguirse y que la Biblioteca perdurará: iluminada, solitaria, infinita, perfectamente inmóvil, armada de volúmenes preciosos, inútil, incorruptible, secreta”. Yo me pregunto ¿qué significa perdurar? ¿Existe el pasado, el presente y el futuro en una biblioteca de este tipo? Una inteligencia artificial es esencialmente un juego de espejos que construye por la vía de la probabilidad una _imagen_ (hablo en sentido figurado, la imagen puede ser texto, video, código) que podemos usar de muchas formas (incluso para autoengañarnos). El original ciertamente es la creación humana y de allí que ahora más que nunca sea invaluable. La abundancia de estas _imágenes_ nos llevan al olvido de lo que está detrás de la creación humana: el dolor y la angustia que estamos destinados a vivir por la condición de tener una historia con inicio, nudo y desenlace. En este sentido, la escritura humana no solo es incomparable, sino más necesaria que nunca.
