@@ -5,7 +5,7 @@ const anio = new Date().getFullYear();
 <footer class="footer">
   <p class="colophon">Hecho desde el Quindío.</p>
   <p class="meta">
-    © 2021–{anio} · Contenido
+    <a href="/rss.xml">rss</a> · © 2021–{anio} · Contenido
     <abbr title="Creative Commons Atribución-NoComercial 4.0">CC BY-NC 4.0</abbr
     >
   </p>
@@ -51,5 +51,15 @@ const anio = new Date().getFullYear();
 
   abbr {
     text-decoration: none;
+  }
+
+  .meta a {
+    color: inherit;
+    text-underline-offset: 0.25em;
+    transition: color 0.2s;
+  }
+
+  .meta a:hover {
+    color: var(--accent);
   }
 </style>

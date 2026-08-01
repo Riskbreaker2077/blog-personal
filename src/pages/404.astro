@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Página no encontrada — Camilo Moreno"
+  description="Esta dirección no existe en la bitácora."
+  noindex
+>
+  <section class="cuatrocientos">
+    <p class="codigo">404</p>
+    <h1>Aquí no hay nada escrito.</h1>
+    <p class="lede">
+      La dirección que abriste no existe, o dejó de existir. Pasa: un texto
+      cambia de nombre, un enlace se copia a medias.
+    </p>
+    <p class="salidas">
+      <a href="/">volver al índice</a>
+      <a href="/archivo/">ver el archivo</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .cuatrocientos {
+    max-width: var(--max-content);
+    padding-block: clamp(2rem, 8vw, 5rem);
+  }
+
+  .codigo {
+    margin: 0 0 1.25rem;
+    color: var(--muted-2);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-width: 32rem;
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 1.06rem;
+    line-height: 1.55;
+  }
+
+  .salidas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 2.25rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .salidas a {
+    color: var(--ink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+  }
+
+  .salidas a:hover {
+    color: var(--accent);
+  }
+</style>

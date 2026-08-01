@@ -7,6 +7,7 @@ _Cómo está construido el proyecto y las reglas que todo el código debe respet
 - **Lenguaje:** TypeScript estricto (Astro lo exige por defecto).
 - **Framework:** Astro 5.x, fijado a una versión exacta en `package.json`, con Content Layer y posts en Markdown. La versión exacta se elige al implementar la feature 000 y no se actualiza de major sin modificar esta constitución.
 - **Runtime / gestor de paquetes:** Node 22 LTS + pnpm (la elección de pnpm es por velocidad y por menor espacio en disco; se puede revisar si surge fricción).
+- **Integraciones Astro:** `@astrojs/rss` y `@astrojs/sitemap`, ambas oficiales y fijadas a versión exacta. Cualquier otra se discute antes de instalarse.
 - **Estilos:** CSS plano con variables CSS en `src/styles/global.css`. Sin Tailwind, sin frameworks de UI en esta primera fase.
 - **Tipografía:** Newsreader para títulos y cuerpo; IBM Plex Mono o JetBrains Mono para metadatos. La monoespaciada final y la estrategia de carga se validan en la feature 000.
 - **Despliegue:** Hostinger. El output de `astro build` se publica en el subdominio o subpath que defina el `site` en `astro.config.mjs`. La subida al hosting se hace por FTP/SSH desde WSL o desde el panel de Hostinger.
@@ -25,6 +26,10 @@ _Mapa breve de dónde vive cada cosa. Solo lo que un recién llegado necesita pa
 - `src/pages/archivo.astro` — archivo cronológico completo.
 - `src/pages/posts/[...id].astro` — ruta dinámica que renderiza un post desde su `id` (nombre del archivo).
 - `src/pages/temas/[topic].astro` — una página por tema editorial: `/temas/<tema>/`.
+- `src/pages/rss.xml.ts` — feed RSS. Solo posts publicados, con URLs absolutas.
+- `src/pages/404.astro` — página de error, con `noindex`.
+- `src/data/sitio.ts` — identidad del sitio para metadatos: nombre, autor, locale, imagen social y licencia.
+- `public/robots.txt` — permisos de rastreo y ubicación del sitemap.
 - `src/lib/posts.ts` — helpers de posts: publicados vs. borradores, orden, agrupación por año, filtro por tema, fechas civiles y tiempo de lectura.
 - `src/pages/sobre.astro` — página "Sobre mí".
 - `src/styles/global.css` — tokens de diseño (colores, tipografía, espaciado) y estilos base.

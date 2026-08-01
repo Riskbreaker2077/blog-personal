@@ -20,13 +20,13 @@ La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/
 
 ## Estado
 
-La base visual, el núcleo editorial y el archivo navegable ya están implementados. El primer texto real está publicado.
+La base visual, el núcleo editorial, el archivo navegable y la capa de distribución ya están implementados. El primer texto real está publicado. Falta desplegar.
 
 1. **000 · Fundamento visual y técnico** — implementada.
 2. **001 · Núcleo editorial publicable** — implementada.
 3. **002 · Índice, archivo y temas** — implementada.
-4. **003 · Distribución e indexación** — siguiente.
-5. **004 · Despliegue en Hostinger** — propuesta.
+4. **003 · Distribución e indexación** — implementada; falta la imagen social.
+5. **004 · Despliegue en Hostinger** — siguiente.
 
 Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
 
@@ -53,13 +53,13 @@ Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadma
 src/
 ├── components/         navegación, footer, cronología y filtro de temas
 ├── content/posts/      posts en Markdown
-├── data/               temas editoriales y sus tonos
+├── data/               temas editoriales e identidad del sitio
 ├── layouts/            layout raíz y layout de lectura
 ├── lib/                helpers de posts, fechas, agrupación y tiempo de lectura
-├── pages/              índice, archivo, «Sobre», /temas/<tema>/ y /posts/<id>/
+├── pages/              índice, archivo, «Sobre», /temas/<tema>/, /posts/<id>/, /rss.xml y 404
 └── styles/             tokens y estilos globales
 
-public/                 assets estáticos
+public/                 assets estáticos y robots.txt
 spec/                   constitución, diseño, features y bitácora
 referente-de-diseno/    archivo histórico; fuera del build
 ```

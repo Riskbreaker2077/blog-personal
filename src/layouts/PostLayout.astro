@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 import { TEMAS } from "../data/temas";
+import { SITIO } from "../data/sitio";
 import { formatearFecha, type Post } from "../lib/posts";
 
 interface Props {
@@ -23,9 +24,43 @@ const {
   epigraph,
 } = post.data;
 const tema = TEMAS[topic];
+
+const url = new URL(Astro.url.pathname, Astro.site);
+const imagen = cover ? cover.src.src : SITIO.imagenSocial;
+
+/**
+ * `BlogPosting` de schema.org: le dice a un buscador que esto es un artículo
+ * con autor, fechas y licencia, y no una página cualquiera. Las fechas van en
+ * formato civil, igual que en el frontmatter.
+ */
+const datosEstructurados = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate,
+  ...(updatedDate ? { dateModified: updatedDate } : {}),
+  author: { "@type": "Person", name: SITIO.autor },
+  publisher: { "@type": "Person", name: SITIO.autor },
+  mainEntityOfPage: { "@type": "WebPage", "@id": url.href },
+  url: url.href,
+  image: new URL(imagen, Astro.site).href,
+  articleSection: tema.label,
+  inLanguage: SITIO.idioma,
+  license: SITIO.licencia,
+  isAccessibleForFree: true,
+};
 ---
 
-<BaseLayout title={`${title} — Camilo Moreno`} description={description}>
+<BaseLayout
+  title={`${title} — Camilo Moreno`}
+  description={description}
+  tipo="article"
+  imagen={imagen}
+  publicado={pubDate}
+  actualizado={updatedDate}
+  datosEstructurados={datosEstructurados}
+>
   <article class="post">
     <a class="back-link" href="/">← volver al índice</a>
 

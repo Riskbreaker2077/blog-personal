@@ -2,6 +2,36 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-01 · Sesión 8 — Distribución e indexación (feature 003)
+
+**Qué se hizo**
+
+- URL canónica confirmada y cambiada: `https://blog.morenocaro.com` en `astro.config.mjs`. El placeholder anterior era `blog.camilomoreno.co`.
+- `src/data/sitio.ts`: nombre, autor, locale, imagen social y licencia en un solo sitio, para que `<head>`, RSS y datos estructurados no se contradigan.
+- `BaseLayout.astro` ampliado: canonical, Open Graph, Twitter Card, `article:*` en posts, `<link rel=alternate>` al feed y un hueco para JSON-LD. Nueva prop `noindex` para páginas que no son destino.
+- `PostLayout.astro` emite `BlogPosting` con autor, fechas civiles, sección, idioma y licencia.
+- `src/pages/rss.xml.ts` con `@astrojs/rss`: solo publicados, URLs absolutas, `dc:creator` en vez de `<author>` (RSS 2.0 exige un correo ahí) y `pubDate` a mediodía UTC para que la fecha civil no se corra de día.
+- `@astrojs/sitemap` con la 404 filtrada, `public/robots.txt` apuntando al sitemap y `src/pages/404.astro` con salidas al índice y al archivo.
+- Enlace visible al feed en el pie.
+
+**Verificación**
+
+- Build: 10 páginas + `rss.xml` + `sitemap-index.xml`. El feed trae un solo ítem, con URL absoluta y `Sat, 01 Aug 2026 12:00:00 GMT`. El sitemap lista las 9 rutas públicas y omite la 404. La 404 sale con `noindex, follow` y sin canonical.
+- ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints sobre 21 archivos.
+
+**Pendiente**
+
+- `public/og.png` (1200×630): lo hace Camilo. Hasta entonces las tarjetas al compartir salen sin imagen.
+- Que Hostinger sirva `404.html` como página de error es configuración del hosting: va en la 004.
+
+**Decisiones**
+
+- Dos dependencias nuevas, ambas oficiales y fijadas a versión exacta: `@astrojs/rss` 4.0.19 y `@astrojs/sitemap` 3.7.3.
+- El feed filtra borradores por su cuenta en vez de confiar en `obtenerPosts`: en desarrollo esa función sí los deja pasar, y un feed no se puede recoger.
+- La 404 no lleva canonical: una página de error no es la versión buena de nada.
+
+**Fricción del entorno** — el pin `pnpm@11.9.0` no corre con el Node 20.18 de Windows. La instalación se hizo con pnpm 10 vía `npx`; queda anotado en `spec/deuda-tecnica.md`.
+
 ## 2026-08-01 · Sesión 7 — Índice, archivo y temas (feature 002)
 
 **Qué se hizo**

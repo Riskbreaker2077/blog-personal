@@ -1,6 +1,6 @@
 # 003 · Distribución e indexación
 
-**Estado:** propuesta
+**Estado:** implementada salvo la imagen social
 
 ## Qué hace
 
@@ -15,13 +15,13 @@ Prepara el blog para buscadores, lectores de feeds y enlaces compartidos:
 
 ## Criterios de aceptación
 
-- [ ] RSS contiene solo posts publicados y URLs absolutas.
-- [ ] Sitemap contiene rutas públicas y omite borradores.
-- [ ] Cada página tiene título, descripción y canonical correctos.
-- [ ] Cada post expone metadatos Open Graph y `BlogPosting`.
-- [ ] La imagen social tiene autoría o licencia compatible.
-- [ ] La 404 orienta al índice y archivo.
-- [ ] No se incorpora analítica invasiva.
+- [x] RSS contiene solo posts publicados y URLs absolutas.
+- [x] Sitemap contiene rutas públicas y omite borradores.
+- [x] Cada página tiene título, descripción y canonical correctos.
+- [x] Cada post expone metadatos Open Graph y `BlogPosting`.
+- [ ] La imagen social tiene autoría o licencia compatible. **Bloqueada: la hace Camilo.**
+- [x] La 404 orienta al índice y archivo.
+- [x] No se incorpora analítica invasiva.
 
 ## Fuera de alcance
 
