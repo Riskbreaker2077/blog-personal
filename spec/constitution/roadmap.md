@@ -11,7 +11,7 @@ _Orden y estado de las features. Solo hay una feature siguiente a la vez._
 
 ## Siguiente 🔜
 
-5. **004 · Despliegue en Hostinger** — dominio, build de producción, publicación, verificación y rollback documentado.
+5. **004 · Despliegue en Hostinger** — dominio, build de producción, publicación, verificación y rollback documentado. Preparada: falta la subida, que ejecuta Camilo con aprobación explícita.
 
 ## Backlog / condicionado por uso real 💡
 

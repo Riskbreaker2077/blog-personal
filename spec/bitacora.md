@@ -2,6 +2,32 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-01 · Sesión 9 — Preparación del despliegue (feature 004)
+
+**Qué se hizo**
+
+- Confirmado el destino: subdominio `blog.morenocaro.com` ya creado en Hostinger; la subida será por SSH + `rsync` desde WSL.
+- `astro.config.mjs`: `build.format: "directory"` y `trailingSlash: "always"` explícitos. Era el comportamiento por defecto; queda escrito para que nadie genere dos URLs del mismo texto.
+- `public/.htaccess`: `ErrorDocument 404`, `Options -Indexes`, caché inmutable para `/_astro/` (los assets llevan hash), revalidación del HTML, una hora para el XML, `nosniff` y `Referrer-Policy`. Se copia solo a `dist/`.
+- `spec/despliegue.md`: runbook completo —credenciales fuera del repo, ruta remota, simulacro con `rsync -n`, publicación con `--delete` y `--backup-dir`, verificación por `curl` y rollback.
+- Auditoría de `dist/`: 26 archivos, 460 KB. Sin borradores, sin `referente-de-diseno/`, sin credenciales, sin URLs de localhost.
+
+**Verificación**
+
+- Build limpio tras `rm -rf dist`: 10 páginas, `.htaccess` incluido. ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints.
+
+**Pendiente**
+
+- **La publicación en sí.** La feature exige aprobación explícita de Camilo y las credenciales no están en el repo: los tres comandos los ejecuta él.
+- Verificar HTTPS, rutas, RSS, sitemap, canonical y 404 contra el dominio real, después de publicar.
+- `public/og.png` sigue sin crearse (viene de la 003).
+
+**Decisiones**
+
+- HTTPS no se fuerza por `.htaccess` sino con el interruptor de hPanel: duplicar la redirección detrás del proxy de Hostinger es la receta del bucle infinito.
+- `rsync --delete` con `--exclude '.well-known/'`: el borrado remoto es lo que impide que sobrevivan páginas de versiones viejas, pero la validación de certificados no se toca.
+- Cada publicación deja lo reemplazado en `backup-AAAAMMDD-HHMM/`. El rollback es un `rsync` a la inversa, no un misterio.
+
 ## 2026-08-01 · Sesión 8 — Distribución e indexación (feature 003)
 
 **Qué se hizo**

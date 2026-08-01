@@ -26,7 +26,7 @@ La base visual, el núcleo editorial, el archivo navegable y la capa de distribu
 2. **001 · Núcleo editorial publicable** — implementada.
 3. **002 · Índice, archivo y temas** — implementada.
 4. **003 · Distribución e indexación** — implementada; falta la imagen social.
-5. **004 · Despliegue en Hostinger** — siguiente.
+5. **004 · Despliegue en Hostinger** — preparada; falta la subida.
 
 Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
 
@@ -70,6 +70,10 @@ referente-de-diseno/    archivo histórico; fuera del build
 2. Frontmatter mínimo: `title`, `description`, `pubDate` (`AAAA-MM-DD`) y `topic`.
 3. Opcionales: `updatedDate`, `cover` (con `alt` obligatorio), `epigraph` (con `text` y `source` opcional) y `draft: true`.
 4. Un borrador se ve en `pnpm dev` y no genera HTML en producción.
+
+## Publicar
+
+El sitio se publica en `https://blog.morenocaro.com` subiendo **solo `dist/`** por SSH + `rsync`. El procedimiento, la verificación y el rollback están en [`spec/despliegue.md`](spec/despliegue.md). Nada se sube sin aprobación explícita.
 
 ## Principios
 

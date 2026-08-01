@@ -10,7 +10,7 @@ _Cómo está construido el proyecto y las reglas que todo el código debe respet
 - **Integraciones Astro:** `@astrojs/rss` y `@astrojs/sitemap`, ambas oficiales y fijadas a versión exacta. Cualquier otra se discute antes de instalarse.
 - **Estilos:** CSS plano con variables CSS en `src/styles/global.css`. Sin Tailwind, sin frameworks de UI en esta primera fase.
 - **Tipografía:** Newsreader para títulos y cuerpo; IBM Plex Mono o JetBrains Mono para metadatos. La monoespaciada final y la estrategia de carga se validan en la feature 000.
-- **Despliegue:** Hostinger. El output de `astro build` se publica en el subdominio o subpath que defina el `site` en `astro.config.mjs`. La subida al hosting se hace por FTP/SSH desde WSL o desde el panel de Hostinger.
+- **Despliegue:** Hostinger, en el subdominio `blog.morenocaro.com`. Se publica **solo `dist/`**, por SSH + `rsync` desde WSL, con aprobación explícita de Camilo en cada publicación. El procedimiento completo —incluido el rollback— está en [`spec/despliegue.md`](../despliegue.md).
 - **Tests:** No hay suite en esta primera fase. La validación es por build limpio + inspección visual local. Si crece, se evalúa Vitest.
 - **Linter:** ESLint con la config recomendada de Astro. Ejecutar antes de cada commit.
 
@@ -30,6 +30,7 @@ _Mapa breve de dónde vive cada cosa. Solo lo que un recién llegado necesita pa
 - `src/pages/404.astro` — página de error, con `noindex`.
 - `src/data/sitio.ts` — identidad del sitio para metadatos: nombre, autor, locale, imagen social y licencia.
 - `public/robots.txt` — permisos de rastreo y ubicación del sitemap.
+- `public/.htaccess` — configuración del servidor: página 404 propia, caché de assets y cabeceras. Se copia tal cual a `dist/`.
 - `src/lib/posts.ts` — helpers de posts: publicados vs. borradores, orden, agrupación por año, filtro por tema, fechas civiles y tiempo de lectura.
 - `src/pages/sobre.astro` — página "Sobre mí".
 - `src/styles/global.css` — tokens de diseño (colores, tipografía, espaciado) y estilos base.
