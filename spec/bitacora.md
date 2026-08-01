@@ -2,6 +2,29 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-01 · Sesión 6 — Epígrafe y primer texto real (cierre de la 001)
+
+**Qué se hizo**
+
+- Campo `epigraph` opcional (`text` requerido, `source` opcional) en el schema, renderizado en `PostLayout.astro` antes del cuerpo y documentado en `tech-stack.md` y `README.md`. Se distingue de la cita destacada, que sigue siendo `>` en el Markdown.
+- Primer texto editorial real: `src/content/posts/las-maquinas-de-escribir.md` («Las máquinas de escribir», tema `filosofia`, publicado). Transcrito desde `Las máquinas de escribir_260801.docx`.
+- Cerrados los dos criterios abiertos de la 001; feature marcada como implementada en `spec.md`, `tasks.md` y roadmap.
+
+**Verificación**
+
+- ESLint: limpio. `astro check`: 0 errores, 0 avisos, 0 hints sobre 15 archivos.
+- Build: 4 páginas. `dist/posts/las-maquinas-de-escribir/index.html` con epígrafe y los dos enlaces a ciudadseva. El borrador de maquetación sigue sin generar HTML.
+
+**Pendiente**
+
+- Portada y archivo siguen mostrando `ENTRADAS_ANUNCIADAS`: el texto real solo es alcanzable por su URL directa hasta la feature 002.
+
+**Decisiones**
+
+- El epígrafe es metadato, no cuerpo: va en el frontmatter para que el layout lo componga alineado a la derecha y no compita con la primera línea del texto.
+- Las dos URLs sueltas bajo «Referencias» en el `.docx` se convirtieron en enlaces dentro del cuerpo, en la mención de cada obra. No hay sección de referencias.
+- La transcripción corrige solo ortografía inequívoca y artefactos de Word; no se toca el estilo del autor.
+
 ## 2026-07-31 · Sesión 5 — Núcleo editorial publicable (feature 001)
 
 **Qué se hizo**

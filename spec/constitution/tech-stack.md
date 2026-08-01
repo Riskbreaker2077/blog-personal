@@ -54,6 +54,7 @@ _Entidad central del blog._
   - `pubDate` (fecha civil `AAAA-MM-DD`, requerido) — fecha de publicación. Determina el orden cronológico. Se guarda como cadena, no como `Date`, para que ninguna zona horaria la desplace un día.
   - `updatedDate` (fecha civil, opcional) — última fecha de actualización material del contenido. Si existe, se muestra junto a "Actualizado el …".
   - `topic` (enum, requerido) — uno de: `filosofia`, `educacion`, `mundo-editorial`, `inteligencia-artificial`, `general`.
+  - `epigraph` (objeto, opcional) — cita breve que abre el texto: `text` requerido, `source` opcional. Se renderiza antes del cuerpo; no se confunde con una cita destacada, que va en el Markdown con `>`.
   - `draft` (boolean, default `false`) — si es `true`, el post no se incluye en el build de producción.
   - `id` — derivado del nombre del archivo, lo gestiona el loader `glob()` de Astro.
 

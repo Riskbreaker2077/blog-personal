@@ -1,6 +1,6 @@
 # 001 · Núcleo editorial publicable
 
-**Estado:** propuesta
+**Estado:** implementada
 
 ## Qué hace
 
@@ -25,15 +25,15 @@ Permite escribir y publicar el primer texto real:
 
 ## Criterios de aceptación
 
-- [ ] `src/content.config.ts` usa `glob()` y schema moderno.
-- [ ] Un texto real se publica en `/posts/<id>`.
-- [ ] No se usa Lorem Ipsum como contenido editorial.
-- [ ] El post muestra título, descripción, fecha, tema y tiempo de lectura.
-- [ ] La portada es opcional y su ausencia no rompe el layout.
-- [ ] Un borrador tiene ruta visible en desarrollo y no genera HTML ni aparece en producción.
-- [ ] Markdown largo, citas, listas, enlaces e imágenes se leen correctamente.
-- [ ] Las fechas usan `<time datetime>` y no cambian por zona horaria.
-- [ ] Build, lint y typecheck pasan.
+- [x] `src/content.config.ts` usa `glob()` y schema moderno.
+- [x] Un texto real se publica en `/posts/<id>`.
+- [x] No se usa Lorem Ipsum como contenido editorial.
+- [x] El post muestra título, descripción, fecha, tema y tiempo de lectura.
+- [x] La portada es opcional y su ausencia no rompe el layout.
+- [x] Un borrador tiene ruta visible en desarrollo y no genera HTML ni aparece en producción.
+- [x] Markdown largo, citas, listas, enlaces e imágenes se leen correctamente.
+- [x] Las fechas usan `<time datetime>` y no cambian por zona horaria.
+- [x] Build, lint y typecheck pasan.
 
 ## Fuera de alcance
 

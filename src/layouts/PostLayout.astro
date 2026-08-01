@@ -12,8 +12,16 @@ interface Props {
 }
 
 const { post, tiempo, anterior, siguiente } = Astro.props;
-const { title, description, pubDate, updatedDate, topic, draft, cover } =
-  post.data;
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  topic,
+  draft,
+  cover,
+  epigraph,
+} = post.data;
 const tema = TEMAS[topic];
 ---
 
@@ -49,6 +57,15 @@ const tema = TEMAS[topic];
             <Image src={cover.src} alt={cover.alt} widths={[480, 800, 1200]} />
           </div>
           <figcaption class="img-caption">{cover.alt}</figcaption>
+        </figure>
+      )
+    }
+
+    {
+      epigraph && (
+        <figure class="epigraph">
+          <blockquote>{epigraph.text}</blockquote>
+          {epigraph.source && <figcaption>{epigraph.source}</figcaption>}
         </figure>
       )
     }
@@ -189,6 +206,47 @@ const tema = TEMAS[topic];
     width: 100%;
     height: auto;
     border-radius: 9px;
+  }
+
+  /* ── Epígrafe ───────────────────────────────────── */
+  .epigraph {
+    max-width: 30rem;
+    margin: 0 0 3rem auto;
+    padding-right: 0.25rem;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .epigraph blockquote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.02rem;
+    font-style: italic;
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .epigraph figcaption {
+    margin-top: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-style: normal;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .epigraph figcaption::before {
+    color: var(--muted-2);
+    content: "— ";
+  }
+
+  @media (max-width: 34rem) {
+    .epigraph {
+      max-width: none;
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--rule);
+      text-align: left;
+    }
   }
 
   /* ── Cuerpo del texto ───────────────────────────── */

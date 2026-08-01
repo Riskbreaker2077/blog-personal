@@ -4,6 +4,9 @@ description: "Borrador técnico para validar el layout de lectura: encabezados, 
 pubDate: 2026-07-31
 topic: general
 draft: true
+epigraph:
+  text: "Un epígrafe abre el texto y no discute con él: lo sitúa."
+  source: "Nota al margen, sin fuente"
 ---
 
 Este archivo existe para verificar cómo se comporta el layout de lectura con

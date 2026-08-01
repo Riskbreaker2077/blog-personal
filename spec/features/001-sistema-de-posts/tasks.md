@@ -9,9 +9,9 @@
 - [x] Excluir rutas de borradores de producción.
 - [x] Implementar portada opcional y alt obligatorio.
 - [x] Implementar navegación anterior/siguiente.
-- [ ] Incorporar un primer texto editorial real. **Bloqueada: la escribe Camilo.**
+- [x] Incorporar un primer texto editorial real: «Las máquinas de escribir».
 - [x] Validar Markdown representativo.
 - [x] Ejecutar lint, typecheck y build.
 - [x] Inspeccionar `dist/`.
-- [ ] Validar los criterios de aceptación. Pendiente solo el del texto real publicado.
+- [x] Validar los criterios de aceptación.
 - [x] Actualizar roadmap, README y bitácora.

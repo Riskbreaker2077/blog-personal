@@ -68,7 +68,7 @@ referente-de-diseno/    archivo histórico; fuera del build
 
 1. Crea `src/content/posts/nombre-legible.md`.
 2. Frontmatter mínimo: `title`, `description`, `pubDate` (`AAAA-MM-DD`) y `topic`.
-3. Opcionales: `updatedDate`, `cover` (con `alt` obligatorio) y `draft: true`.
+3. Opcionales: `updatedDate`, `cover` (con `alt` obligatorio), `epigraph` (con `text` y `source` opcional) y `draft: true`.
 4. Un borrador se ve en `pnpm dev` y no genera HTML en producción.
 
 ## Principios

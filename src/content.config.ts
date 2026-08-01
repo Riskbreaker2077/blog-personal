@@ -46,6 +46,14 @@ const posts = defineCollection({
       updatedDate: fechaCivil.optional(),
       topic: z.enum(temas),
       draft: z.boolean().default(false),
+      // Epígrafe: cita breve que abre el texto, antes del cuerpo. Distinto de
+      // una cita destacada, que va en el Markdown con `>`.
+      epigraph: z
+        .object({
+          text: z.string().min(3),
+          source: z.string().optional(),
+        })
+        .optional(),
       // Portada opcional; si existe, el texto alternativo es obligatorio.
       cover: z
         .object({

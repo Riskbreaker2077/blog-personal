@@ -5,7 +5,7 @@ _Orden y estado de las features. Solo hay una feature siguiente a la vez._
 ## Hecho ✅
 
 1. **000 · Fundamento visual y técnico** — Astro 5, sistema visual, layout, navegación, portada representativa y página “Sobre”.
-2. **001 · Núcleo editorial publicable** — Content Layer moderna, schema, página individual y borradores. Queda abierta la publicación del primer texto real, que escribe Camilo.
+2. **001 · Núcleo editorial publicable** — Content Layer moderna, schema, página individual y borradores. Primer texto real publicado: «Las máquinas de escribir».
 
 ## Siguiente 🔜
 
