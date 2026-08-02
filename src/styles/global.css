@@ -75,6 +75,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* La barra superior es fija: sin esto, un salto a un ancla queda debajo. */
+  scroll-padding-top: 5rem;
 }
 
 body {

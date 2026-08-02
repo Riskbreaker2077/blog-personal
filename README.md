@@ -51,6 +51,14 @@ Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadma
 - `pnpm lint`
 - `pnpm astro check`
 
+**Desde WSL no funcionan directamente.** `node_modules` tiene binarios de Windows, así que Astro hay que lanzarlo con el Node de Windows:
+
+```bash
+cmd.exe /c "node_modules\.bin\astro.cmd dev"
+```
+
+Lo cómodo es abrir PowerShell en la carpeta del proyecto y usar `npm run dev` ahí. Si ves `Cannot find module @rollup/rollup-linux-x64-gnu`, es esto y no un fallo del código. Detalle en [`spec/constitution/tech-stack.md`](spec/constitution/tech-stack.md).
+
 ## Estructura actual
 
 ```text

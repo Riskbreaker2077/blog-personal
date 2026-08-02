@@ -57,6 +57,18 @@ Todos se ejecutan desde la raíz del proyecto.
 - `pnpm lint` — corre ESLint sobre el código.
 - `pnpm astro check` — validación de tipos sobre `.astro` y TypeScript.
 
+### Desde WSL, ojo
+
+El repositorio vive en `/mnt/c`, pero `node_modules` tiene los binarios de **Windows**. Lanzar Astro con el Node de Linux falla con `Cannot find module @rollup/rollup-linux-x64-gnu`, que **no indica nada roto en el código**: es el intérprete equivocado.
+
+| Comando | WSL | Windows |
+|---|---|---|
+| `npx eslint .` | ✅ | ✅ |
+| `astro dev` / `build` / `check` | Solo vía `cmd.exe /c "node_modules\.bin\astro.cmd <sub>"` | ✅ `npm run <sub>` |
+| `git`, `ssh`, `rsync` | ✅ | — |
+
+Lo cómodo para escribir es abrir PowerShell en la carpeta del proyecto y usar `npm run dev` ahí. La causa de fondo está en [`spec/deuda-tecnica.md`](../deuda-tecnica.md): el Node de Windows es 20.18.0 y el pnpm pineado exige 22.13.
+
 ## Modelo de datos / dominio
 
 _Entidad central del blog._

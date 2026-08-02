@@ -2,6 +2,31 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-02 · Sesión 11 — Cabecera fija y marca que se contrae
+
+**Qué se hizo**
+
+- **La barra superior deja de desaparecer al bajar.** `position: sticky` más un velo que disuelve el texto por debajo. El velo no es un color plano: el fondo del `body` lleva degradados fijos justo en la franja superior y taparlos con crema opaca dejaba un rectángulo visible. Es papel translúcido más `backdrop-filter: blur(7px)` con una `mask-image` que lo apaga hacia abajo, de modo que el texto se desvanece en vez de chocar contra un borde. Hay un `@supports` de reserva con más papel para navegadores sin `backdrop-filter`.
+- `scroll-padding-top: 5rem` en `html`: con una barra fija, cualquier salto a un ancla habría quedado escondido debajo.
+- **La marca se contrae a «CM» al bajar.** Testigo de un píxel encima de la barra y un `IntersectionObserver`; sin escuchar `scroll`, que se dispararía en cada cuadro de una página de lectura larga. Arriba del todo se lee el nombre entero, así que el lector ve de dónde sale la abreviatura.
+- En móvil la abreviatura es permanente, no condicionada al scroll: el nombre completo más la navegación ocupan ~350 px y en una pantalla de 360 px quedan 316 útiles. Sin eso, la barra se parte en dos renglones al abrir cualquier página.
+- Documentada por fin la trampa del entorno: desde WSL, Astro hay que lanzarlo con el Node de Windows. Va en `README.md` y en `tech-stack.md`, con el síntoma exacto (`Cannot find module @rollup/rollup-linux-x64-gnu`) para que sea buscable.
+
+**Verificación**
+
+- ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints. Build de 10 páginas.
+
+**Pendiente**
+
+- Decidir qué pasa con `grafo/` en la raíz.
+- Decidir si el grafo y la puntuación se formalizan como feature 005.
+- Revisar el sitio en vivo en móvil y en modo oscuro.
+
+**Decisiones**
+
+- El nombre completo se muestra siempre al principio de la página en escritorio. La contracción es un gesto que el lector presencia, no un estado inicial que tenga que descifrar.
+- Sin JavaScript, la marca queda entera en escritorio y abreviada en móvil. Las dos son legibles: la mejora es progresiva, no un requisito.
+
 ## 2026-08-02 · Sesión 10 — El sitio sale a producción
 
 **Qué se hizo**
@@ -40,7 +65,6 @@ _RSS legible._ Tras publicar, el feed «no funcionaba»: era válido, pero el na
 
 - Decidir qué pasa con `grafo/` en la raíz: el componente ya vive en `src/`, así que la carpeta sobra.
 - Decidir si el grafo y la puntuación se formalizan como feature 005 o se absorben en la 000. Preguntado tres veces, sin respuesta todavía.
-- Republicar para que `rss.xsl` llegue al servidor.
 - Revisar el sitio en vivo en móvil y en modo oscuro.
 
 **Decisiones**

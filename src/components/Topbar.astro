@@ -8,10 +8,22 @@ const links = [
 ];
 ---
 
-<header class="topbar">
+{/*
+  Testigo de un píxel, justo encima de la barra. Cuando sale de la pantalla es
+  que el lector empezó a bajar. Se resuelve con IntersectionObserver y no
+  escuchando `scroll`: no se ejecuta nada en cada cuadro del desplazamiento.
+*/}
+<span class="centinela" aria-hidden="true"></span>
+
+<header class="topbar" data-topbar>
+  {/*
+    El `aria-label` del enlace manda sobre el texto interior, así que un lector
+    de pantalla siempre oye «Camilo Moreno» aunque en móvil se vea «CM».
+  */}
   <a class="brand" href="/" aria-label="Camilo Moreno, ir al índice">
     <span class="brand-dot" aria-hidden="true"></span>
-    <span>Camilo Moreno</span>
+    <span class="brand-largo">Camilo Moreno</span>
+    <span class="brand-corto" aria-hidden="true">CM</span>
     <span class="brand-sub">— bitácora</span>
   </a>
 
@@ -45,6 +57,17 @@ const links = [
 </header>
 
 <script>
+  // Marca la barra en cuanto el testigo sale de la pantalla. Sin JavaScript la
+  // marca se queda entera en escritorio y abreviada en móvil: ambas legibles.
+  const barra = document.querySelector<HTMLElement>("[data-topbar]");
+  const centinela = document.querySelector(".centinela");
+
+  if (barra && centinela) {
+    new IntersectionObserver(([entrada]) => {
+      barra.toggleAttribute("data-scrolled", !entrada.isIntersecting);
+    }).observe(centinela);
+  }
+
   const boton = document.getElementById("theme-toggle");
   const meta = document.getElementById("theme-color") as HTMLMetaElement | null;
 
@@ -78,11 +101,52 @@ const links = [
 
 <style>
   .topbar {
+    position: sticky;
+    z-index: 20;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
+    padding-block: 0.875rem;
     margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
+  }
+
+  /*
+   * El velo que disuelve el texto al pasar por debajo. No puede ser un color
+   * plano: el fondo del body lleva degradados fijos justo en la franja
+   * superior, y taparlos con crema opaca deja un rectángulo visible. Por eso
+   * es papel translúcido + desenfoque: lo que borra el texto es el desenfoque,
+   * no la opacidad, y los degradados siguen asomando.
+   *
+   * Se extiende de borde a borde porque el `.shell` es más estrecho que la
+   * ventana, y sobresale por abajo para que la máscara tenga dónde apagarse.
+   */
+  .topbar::before {
+    position: absolute;
+    z-index: -1;
+    inset: -3rem -50vw -1.75rem;
+    backdrop-filter: blur(7px);
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--paper) 86%, transparent) 55%,
+      color-mix(in oklab, var(--paper) 60%, transparent) 78%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(to bottom, #000 74%, transparent 100%);
+    content: "";
+    pointer-events: none;
+  }
+
+  /* Sin desenfoque, el texto asomaría legible: hace falta más papel. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .topbar::before {
+      background: linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--paper) 97%, transparent) 62%,
+        transparent 100%
+      );
+    }
   }
 
   .brand {
@@ -112,6 +176,31 @@ const links = [
     font-size: 0.68rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .brand-corto {
+    display: none;
+  }
+
+  /* No ocupa sitio: solo marca dónde está el principio de la página. */
+  .centinela {
+    display: block;
+    height: 1px;
+    margin-bottom: -1px;
+  }
+
+  /*
+   * Al bajar, la marca se contrae. Arriba del todo siempre se lee el nombre
+   * completo, así que quien llega sabe de quién es el sitio y ve de dónde sale
+   * el «CM».
+   */
+  .topbar[data-scrolled] .brand-largo,
+  .topbar[data-scrolled] .brand-sub {
+    display: none;
+  }
+
+  .topbar[data-scrolled] .brand-corto {
+    display: inline;
   }
 
   ul {
@@ -174,16 +263,29 @@ const links = [
     color: var(--ink);
   }
 
+  /*
+   * En móvil se abrevia desde el principio, sin esperar al scroll: el nombre
+   * completo más la navegación no caben en una fila de 360 px y la barra se
+   * partiría en dos renglones. El enlace sigue anunciándose entero por voz.
+   */
   @media (max-width: 34rem) {
     .topbar {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 1.125rem;
+      gap: 1rem;
       margin-bottom: 2.5rem;
     }
 
+    .brand-largo,
+    .brand-sub {
+      display: none;
+    }
+
+    .brand-corto {
+      display: inline;
+      letter-spacing: 0.02em;
+    }
+
     ul {
-      gap: 1.125rem;
+      gap: 1rem;
     }
   }
 </style>
