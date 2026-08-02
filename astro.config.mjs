@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import { rehypePuntuacion } from "./src/lib/rehype-puntuacion.mjs";
 
 export default defineConfig({
   site: "https://blog.morenocaro.com",
@@ -12,6 +13,10 @@ export default defineConfig({
    */
   build: { format: "directory" },
   trailingSlash: "always",
+  markdown: {
+    // Marca los signos de puntuación para que tomen el color del tema del post.
+    rehypePlugins: [rehypePuntuacion],
+  },
   integrations: [
     sitemap({
       // La 404 no es una página que un buscador deba indexar.

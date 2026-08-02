@@ -105,7 +105,7 @@ const datosEstructurados = {
       )
     }
 
-    <div class="post-body">
+    <div class="post-body" data-tone={tema.tono}>
       <slot />
     </div>
 
@@ -287,6 +287,40 @@ const datosEstructurados = {
   /* ── Cuerpo del texto ───────────────────────────── */
   .post-body {
     font-size: 1.06rem;
+  }
+
+  /*
+   * La puntuación lleva el color del tema: es lo único que recorre el texto
+   * entero sin pertenecer a ninguna palabra.
+   *
+   * El tono va mezclado con la tinta al 70%. Sin mezclar, el oro sobre papel
+   * crema deja comas prácticamente invisibles, y una coma que no se ve cambia
+   * cómo se lee la frase. `general` no tiene regla: se queda en color de texto.
+   */
+  .post-body :global(.punct) {
+    color: var(--punct, inherit);
+  }
+
+  .post-body[data-tone="accent"] {
+    --punct: color-mix(in oklab, var(--tone-accent) 70%, var(--ink));
+  }
+
+  .post-body[data-tone="gold"] {
+    --punct: color-mix(in oklab, var(--tone-gold) 70%, var(--ink));
+  }
+
+  .post-body[data-tone="ink"] {
+    --punct: color-mix(in oklab, var(--tone-ink) 70%, var(--ink));
+  }
+
+  .post-body[data-tone="peri"] {
+    --punct: color-mix(in oklab, var(--tone-peri) 70%, var(--ink));
+  }
+
+  /* Dentro de un enlace o de una cita manda el color del bloque, no el del tema. */
+  .post-body :global(a .punct),
+  .post-body :global(blockquote .punct) {
+    color: inherit;
   }
 
   .post-body :global(p) {
