@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Cronologia from "../components/Cronologia.astro";
 import FiltroTemas from "../components/FiltroTemas.astro";
+import GrafoCerebral from "../components/GrafoCerebral.astro";
 import { agruparPorAnio, contarEntradas, obtenerPosts } from "../lib/posts";
 
 const MAXIMO_RECIENTES = 5;
@@ -16,32 +17,26 @@ const grupos = agruparPorAnio(recientes);
     <div class="hero-wrap">
       <div class="hero-copy">
         <h1 id="hero-title">
-          Notas sobre filosofía, educación y <span class="em"
-            >máquinas que parecen pensar</span
+          Apuntes sobre filosofía, educación y <span class="em">tecnología</span
           >.
         </h1>
         <p>
-          Soy Camilo. Doy clases, leo despacio y escribo aquí cuando una idea me
-          persigue durante más de una semana. Sin calendario editorial, sin
-          newsletter, sin prisa.
-        </p>
-        <p class="hero-meta">
-          <span>bitácora</span>
-          <span>desde el Quindío</span>
-          <span>desde 2021</span>
+          Un espacio para reflexionar sobre las situaciones presentes, los
+          pensamientos pasados y las ideas de futuro. No busca ser muy
+          académico, ni tampoco difundir; es un lugar de personal reflexión. Por
+          eso, es público.
         </p>
       </div>
 
-      <figure class="hero-figure">
-        <div class="img-frame" style="aspect-ratio: 3 / 4">
-          <div>Retrato o ilustración — 3:4</div>
-        </div>
-        <figcaption class="img-caption">retrato / ilustración</figcaption>
-      </figure>
+      <div class="hero-grafo">
+        <GrafoCerebral />
+      </div>
     </div>
   </section>
 
-  <FiltroTemas activo="todos" />
+  <div class="filtros">
+    <FiltroTemas activo="todos" />
+  </div>
 
   <section aria-labelledby="timeline-title">
     <h2 id="timeline-title" class="visually-hidden">Línea del pensamiento</h2>
@@ -59,22 +54,19 @@ const grupos = agruparPorAnio(recientes);
     }
   </section>
 
-  <p class="closing">
-    {
-      posts.length > recientes.length ? (
-        <>
-          Estos son los {MAXIMO_RECIENTES} más recientes de{" "}
-          {contarEntradas(posts.length)}. El resto está en el{" "}
-          <a href="/archivo/">archivo</a>.
-        </>
-      ) : (
-        <>
-          También puedes leer <a href="/sobre/">de qué va este cuaderno</a> o
-          mirar el <a href="/archivo/">archivo</a>.
-        </>
-      )
-    }
-  </p>
+  {
+    /*
+     * Solo cuando hay más textos de los que caben en la portada: si están
+     * todos a la vista, el cierre no dice nada que no se vea ya.
+     */
+    posts.length > recientes.length && (
+      <p class="closing">
+        Estos son los {MAXIMO_RECIENTES} más recientes de{" "}
+        {contarEntradas(posts.length)}. El resto está en el{" "}
+        <a href="/archivo/">archivo</a>.
+      </p>
+    )
+  }
 </BaseLayout>
 
 <style>
@@ -94,7 +86,11 @@ const grupos = agruparPorAnio(recientes);
 
   .hero-wrap {
     display: grid;
-    grid-template-columns: 1fr 14rem;
+    /*
+     * 20rem, no 14rem: el grafo necesita ancho para leerse como figura y no
+     * como ruido. Al texto le quedan ~35rem, justo su medida de lectura.
+     */
+    grid-template-columns: 1fr 20rem;
     gap: 2.75rem;
     align-items: end;
   }
@@ -134,37 +130,57 @@ const grupos = agruparPorAnio(recientes);
     transform: skew(-6deg, -1deg);
   }
 
-  .hero-copy > p:not(.hero-meta) {
+  /* Por encima del grafo: el texto se lee y se selecciona, el grafo pasa detrás. */
+  .hero-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-copy > p {
     max-width: 35rem;
     margin: 0;
     color: var(--ink-2);
-    font-size: 1.18rem;
-    line-height: 1.55;
+    font-size: 1.12rem;
+    line-height: 1.6;
   }
 
-  .hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.125rem;
-    margin: 1.75rem 0 0;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  /*
+   * Sin marco, sin fondo y sin pie: el grafo no es una ilustración metida en
+   * una caja, es parte del papel. Se desborda de su columna hacia el texto y
+   * la máscara radial disuelve los cuatro bordes, de modo que el lienzo no
+   * termina en ninguna parte: los nodos simplemente se apagan.
+   *
+   * `closest-side` no es opcional. Por defecto la elipse se mide hasta la
+   * esquina más lejana, así que en mitad del borde inferior la máscara aún era
+   * opaca y el lienzo se cortaba en seco justo encima de los filtros.
+   *
+   * El margen derecho se queda en -1rem a propósito: el canalón mínimo de
+   * `.shell` es 1.375rem, y pasarse de ahí saca una barra de scroll horizontal.
+   */
+  .hero-grafo {
+    position: relative;
+    z-index: 0;
+    align-self: center;
+    aspect-ratio: 4 / 3;
+    margin: -3rem -1rem -3rem -9rem;
+    -webkit-mask-image: radial-gradient(
+      ellipse closest-side at center,
+      #000 45%,
+      rgb(0 0 0 / 0.6) 72%,
+      transparent 96%
+    );
+    mask-image: radial-gradient(
+      ellipse closest-side at center,
+      #000 45%,
+      rgb(0 0 0 / 0.6) 72%,
+      transparent 96%
+    );
   }
 
-  .hero-meta span::before {
-    color: var(--muted-2);
-    content: "— ";
-  }
-
-  .hero-meta span:first-child::before {
-    content: "";
-  }
-
-  .hero-figure {
-    margin: 0;
+  /* El grafo se desborda hacia abajo; los filtros tienen que seguir siendo clicables. */
+  .filtros {
+    position: relative;
+    z-index: 1;
   }
 
   .vacio {
@@ -208,8 +224,13 @@ const grupos = agruparPorAnio(recientes);
       gap: 1.75rem;
     }
 
-    .hero-figure {
-      max-width: 14rem;
+    /*
+     * En una sola columna el grafo no tiene sobre qué desbordarse: queda como
+     * un bloque suelto entre el texto y los filtros. Mejor no mostrarlo.
+     * Los observadores del componente lo detectan y detienen el bucle solo.
+     */
+    .hero-grafo {
+      display: none;
     }
   }
 </style>

@@ -1,0 +1,589 @@
+---
+/**
+ * Ilustración de la portada: un lienzo transparente con nodos y enlaces que se
+ * mueven despacio y reaccionan al cursor. Es el único elemento animado del
+ * blog.
+ *
+ * Vive en `src/` y no en `public/` para que Astro lo empaquete y solo se
+ * descargue en las páginas que lo usan. Los colores no están escritos aquí: se
+ * leen de los tokens de `global.css`, así el grafo cambia con el tema sin
+ * duplicar la paleta.
+ */
+
+interface Props {
+  /** Cantidad de nodos. Se acota entre 24 y 110. */
+  nodos?: number;
+  /** Velocidad del movimiento ambiental. Se acota entre 0.1 y 2. */
+  velocidad?: number;
+  /** Fuerza con la que el puntero empuja los nodos. Entre 0.25 y 2.5. */
+  interaccion?: number;
+  /** Velocidad y sentido del giro. Entre -2 y 2; `0` lo detiene. */
+  rotacion?: number;
+  /** Texto alternativo del lienzo. */
+  etiqueta?: string;
+}
+
+const {
+  nodos = 68,
+  velocidad = 0.72,
+  interaccion = 1,
+  rotacion = 1.25,
+  etiqueta = "Grafo de ideas conectadas, en movimiento lento",
+} = Astro.props;
+---
+
+<grafo-cerebral
+  nodos={nodos}
+  velocidad={velocidad}
+  interaccion={interaccion}
+  rotacion={rotacion}
+  etiqueta={etiqueta}></grafo-cerebral>
+
+<style>
+  grafo-cerebral {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  /** Rojo, verde, azul y alfa: hay tonos de tema que llegan translúcidos. */
+  type RGBA = [number, number, number, number];
+
+  interface Nodo {
+    /** Posición actual. */
+    x: number;
+    y: number;
+    /** Posición de reposo: hacia aquí tira el resorte. */
+    ox: number;
+    oy: number;
+    vx: number;
+    vy: number;
+    r: number;
+    /** Profundidad simulada: modula opacidad y halo. */
+    depth: number;
+    /** Índice en la paleta, no un color fijo: así el tema puede cambiar. */
+    tema: number;
+    /** Desfase del vaivén, para que no respiren todos a la vez. */
+    phase: number;
+  }
+
+  interface Enlace {
+    a: number;
+    b: number;
+  }
+
+  interface Onda {
+    x: number;
+    y: number;
+    r: number;
+    alpha: number;
+  }
+
+  /**
+   * Los mismos tonos que marcan las entradas en la cronología, en el orden de
+   * `src/data/temas.ts`. Cada nodo del grafo es uno de los temas sobre los que
+   * se escribe aquí; si un tema cambia de tono, el grafo cambia con él.
+   */
+  const TOKENS = [
+    "--tone-accent", // filosofía
+    "--tone-gold", // educación
+    "--tone-peri", // mundo editorial
+    "--tone-ink", // inteligencia artificial
+    "--tone-muted", // general
+  ] as const;
+
+  /**
+   * Reparto de nodos por tema. Suma 1. El rojo pesa poco porque en el resto
+   * del sitio es un acento, no un color de fondo.
+   */
+  const PESOS = [0.14, 0.26, 0.2, 0.24, 0.16];
+
+  const ACENTO = 0;
+
+  /** Paleta clara literal, por si algún token deja de poder resolverse. */
+  const RESPALDO: RGBA[] = [
+    [196, 21, 8, 1],
+    [212, 187, 124, 1],
+    [133, 77, 39, 1],
+    [15, 75, 75, 1],
+    [23, 17, 13, 0.38],
+  ];
+
+  /** Elige tema con las probabilidades de `PESOS`. */
+  function elegirTema(): number {
+    let resto = Math.random();
+    for (let i = 0; i < PESOS.length; i++) {
+      resto -= PESOS[i];
+      if (resto <= 0) return i;
+    }
+    return PESOS.length - 1;
+  }
+
+  /** Desglosa lo que devuelve el navegador: `#rrggbb` o `rgba(r, g, b, a)`. */
+  function desglosar(normalizado: string): RGBA | null {
+    if (normalizado.startsWith("#")) {
+      const n = parseInt(normalizado.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255, 1];
+    }
+    const partes = normalizado.match(/[\d.]+/g);
+    if (!partes || partes.length < 3) return null;
+    return [
+      Number(partes[0]),
+      Number(partes[1]),
+      Number(partes[2]),
+      partes[3] === undefined ? 1 : Number(partes[3]),
+    ];
+  }
+
+  const rgba = (c: RGBA, alpha: number) =>
+    `rgba(${c[0]},${c[1]},${c[2]},${alpha * c[3]})`;
+
+  class GrafoCerebral extends HTMLElement {
+    static get observedAttributes() {
+      return ["nodos", "velocidad", "interaccion", "rotacion"];
+    }
+
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
+    private nodos: Nodo[] = [];
+    private enlaces: Enlace[] = [];
+    private ondas: Onda[] = [];
+    private paleta: RGBA[] = RESPALDO;
+    private puntero = { x: 0, y: 0, activo: false, modo: 1 };
+    private arrastrado: Nodo | null = null;
+    private ancho = 0;
+    private alto = 0;
+    private cuadro = 0;
+    private ultimo = 0;
+    private visible = true;
+    private quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    private observadorTamano?: ResizeObserver;
+    private observadorVista?: IntersectionObserver;
+    private observadorTema?: MutationObserver;
+
+    constructor() {
+      super();
+      const raiz = this.attachShadow({ mode: "open" });
+      raiz.innerHTML = `
+        <style>
+          :host { display:block; inline-size:100%; block-size:100%; contain:layout paint; }
+          canvas {
+            display:block; inline-size:100%; block-size:100%;
+            /* pan-y y no none: en móvil el dedo tiene que poder desplazar la página. */
+            touch-action:pan-y; cursor:crosshair;
+          }
+          @media (prefers-reduced-motion: reduce) { canvas { cursor:default; } }
+        </style>
+        <canvas role="img"></canvas>`;
+      this.canvas = raiz.querySelector("canvas") as HTMLCanvasElement;
+      // El contexto 2d solo es null si ya se pidió otro tipo sobre este lienzo.
+      this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+      this.animar = this.animar.bind(this);
+    }
+
+    connectedCallback() {
+      this.canvas.setAttribute(
+        "aria-label",
+        this.getAttribute("etiqueta") ?? "Grafo de ideas",
+      );
+      this.resolverPaleta();
+
+      this.observadorTamano = new ResizeObserver(() => this.redimensionar());
+      this.observadorTamano.observe(this);
+
+      // El tema se cambia en la topbar; el lienzo no hereda variables CSS.
+      this.observadorTema = new MutationObserver(() => {
+        this.resolverPaleta();
+        if (this.quieto) this.dibujar(performance.now());
+      });
+      this.observadorTema.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+
+      // Fuera de pantalla no hay nada que mirar: se detiene el bucle.
+      this.observadorVista = new IntersectionObserver((entradas) => {
+        this.visible = entradas.some((entrada) => entrada.isIntersecting);
+        this.sincronizarBucle();
+      });
+      this.observadorVista.observe(this);
+
+      if (!this.quieto) this.escucharPuntero();
+      this.redimensionar();
+      this.sincronizarBucle();
+    }
+
+    disconnectedCallback() {
+      this.observadorTamano?.disconnect();
+      this.observadorVista?.disconnect();
+      this.observadorTema?.disconnect();
+      cancelAnimationFrame(this.cuadro);
+      this.cuadro = 0;
+    }
+
+    attributeChangedCallback() {
+      if (this.isConnected) this.sembrar();
+    }
+
+    private get cantidad() {
+      return this.acotar(this.getAttribute("nodos"), 24, 110, 64);
+    }
+
+    private get velocidad() {
+      return this.acotar(this.getAttribute("velocidad"), 0.1, 2, 0.72);
+    }
+
+    private get interaccion() {
+      return this.acotar(this.getAttribute("interaccion"), 0.25, 2.5, 1);
+    }
+
+    private get rotacion() {
+      const valor = this.getAttribute("rotacion");
+      if (valor === "0") return 0;
+      return this.acotar(valor, -2, 2, 1.15);
+    }
+
+    private acotar(
+      valor: string | null,
+      minimo: number,
+      maximo: number,
+      porDefecto: number,
+    ) {
+      const n = Number(valor);
+      if (!valor || Number.isNaN(n)) return porDefecto;
+      return Math.max(minimo, Math.min(maximo, n));
+    }
+
+    private resolverPaleta() {
+      const estilos = getComputedStyle(document.documentElement);
+      this.paleta = TOKENS.map(
+        (token, i) =>
+          this.resolverColor(estilos.getPropertyValue(token)) ?? RESPALDO[i],
+      );
+    }
+
+    /**
+     * Deja que el navegador interprete el color en vez de parsearlo a mano: así
+     * un token vale lo mismo si mañana se escribe en hexadecimal, `rgb()` o
+     * `color-mix()`. Los dos centinelas distinguen «el color era negro» de «el
+     * valor no se pudo interpretar», porque asignar basura a `fillStyle` no
+     * lanza error: simplemente no cambia nada.
+     */
+    private resolverColor(valor: string): RGBA | null {
+      const bruto = valor.trim();
+      if (!bruto) return null;
+      const c = this.ctx;
+      const previo = c.fillStyle;
+      const probar = (centinela: string) => {
+        c.fillStyle = centinela;
+        c.fillStyle = bruto;
+        return c.fillStyle as string;
+      };
+      const sobreNegro = probar("#000000");
+      const sobreBlanco = probar("#ffffff");
+      c.fillStyle = previo;
+      return sobreNegro === sobreBlanco ? desglosar(sobreNegro) : null;
+    }
+
+    /** Arranca o detiene el bucle según lo que corresponda ahora mismo. */
+    private sincronizarBucle() {
+      const debeCorrer = this.visible && !this.quieto && this.isConnected;
+      if (debeCorrer && !this.cuadro) {
+        this.ultimo = 0;
+        this.cuadro = requestAnimationFrame(this.animar);
+      } else if (!debeCorrer && this.cuadro) {
+        cancelAnimationFrame(this.cuadro);
+        this.cuadro = 0;
+      }
+    }
+
+    private redimensionar() {
+      const caja = this.getBoundingClientRect();
+      if (!caja.width || !caja.height) return;
+      // Por encima de 2 el coste de píxeles no compensa la nitidez ganada.
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      this.ancho = caja.width;
+      this.alto = caja.height;
+      this.canvas.width = Math.round(this.ancho * dpr);
+      this.canvas.height = Math.round(this.alto * dpr);
+      this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      this.sembrar();
+      if (this.quieto) this.dibujar(performance.now());
+    }
+
+    /**
+     * Reparte los nodos en dos lóbulos elípticos. Conserva los que ya existían
+     * para que un cambio de tamaño no vuelva a barajar la figura entera.
+     */
+    private sembrar() {
+      if (!this.ancho || !this.alto) return;
+      const previos = this.nodos;
+      this.nodos = Array.from({ length: this.cantidad }, (_, i) => {
+        const previo = previos[i];
+        if (previo) {
+          return {
+            ...previo,
+            x: Math.min(previo.x, this.ancho),
+            y: Math.min(previo.y, this.alto),
+          };
+        }
+        const lado = i % 2 ? 1 : -1;
+        const angulo = Math.random() * Math.PI * 2;
+        // La raíz evita que los nodos se apelotonen en el centro del lóbulo.
+        const radio = Math.sqrt(Math.random());
+        const centroX = this.ancho * 0.5;
+        const centroY = this.alto * 0.5;
+        const x = Math.cos(angulo) * this.ancho * 0.245 * radio;
+        const y = Math.sin(angulo) * this.alto * 0.37 * radio;
+        const estrechamiento = 1 - Math.min(0.34, (Math.abs(y) / this.alto) * 0.28);
+        return {
+          x: centroX + lado * this.ancho * 0.145 + x * estrechamiento,
+          y: centroY + y,
+          ox: 0,
+          oy: 0,
+          vx: (Math.random() - 0.5) * 0.08,
+          vy: (Math.random() - 0.5) * 0.08,
+          r: 1.5 + Math.random() * 2.8,
+          depth: 0.45 + Math.random() * 0.55,
+          tema: elegirTema(),
+          phase: Math.random() * Math.PI * 2,
+        };
+      });
+      for (const nodo of this.nodos) {
+        nodo.ox = nodo.x;
+        nodo.oy = nodo.y;
+      }
+      this.tejerEnlaces();
+    }
+
+    /** Cada nodo se une a sus cuatro vecinos más cercanos, más un puente entre lóbulos. */
+    private tejerEnlaces() {
+      const enlaces: Enlace[] = [];
+      const alcance = Math.min(this.ancho, this.alto) * 0.23;
+      for (let i = 0; i < this.nodos.length; i++) {
+        const cercanos: { enlace: Enlace; d: number }[] = [];
+        for (let j = i + 1; j < this.nodos.length; j++) {
+          const a = this.nodos[i];
+          const b = this.nodos[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < alcance) cercanos.push({ enlace: { a: i, b: j }, d });
+        }
+        cercanos.sort((x, y) => x.d - y.d);
+        enlaces.push(...cercanos.slice(0, 4).map((c) => c.enlace));
+      }
+
+      const medio = this.ancho / 2;
+      const porCercania = (a: { nodo: Nodo }, b: { nodo: Nodo }) =>
+        Math.abs(a.nodo.x - medio) - Math.abs(b.nodo.x - medio);
+      const indexados = this.nodos.map((nodo, i) => ({ nodo, i }));
+      const izquierda = indexados
+        .filter((x) => x.nodo.x < medio)
+        .sort(porCercania)
+        .slice(0, 5);
+      const derecha = indexados
+        .filter((x) => x.nodo.x >= medio)
+        .sort(porCercania)
+        .slice(0, 5);
+
+      for (const a of izquierda) {
+        let pareja: (typeof derecha)[number] | undefined;
+        let menor = Infinity;
+        for (const b of derecha) {
+          const d = Math.abs(b.nodo.y - a.nodo.y);
+          if (d < menor) {
+            menor = d;
+            pareja = b;
+          }
+        }
+        if (pareja) enlaces.push({ a: a.i, b: pareja.i });
+      }
+
+      this.enlaces = enlaces;
+    }
+
+    private escucharPuntero() {
+      const ubicar = (e: PointerEvent) => {
+        const caja = this.canvas.getBoundingClientRect();
+        this.puntero.x = e.clientX - caja.left;
+        this.puntero.y = e.clientY - caja.top;
+      };
+      // Solo ratón: en pantalla táctil el grafo es ambiental y no roba el gesto.
+      const esRaton = (e: PointerEvent) => e.pointerType === "mouse";
+
+      this.canvas.addEventListener("pointerenter", (e) => {
+        if (!esRaton(e)) return;
+        ubicar(e);
+        this.puntero.activo = true;
+      });
+      this.canvas.addEventListener("pointermove", (e) => {
+        if (!esRaton(e)) return;
+        ubicar(e);
+        if (this.arrastrado) {
+          this.arrastrado.x = this.puntero.x;
+          this.arrastrado.y = this.puntero.y;
+          this.arrastrado.vx = 0;
+          this.arrastrado.vy = 0;
+        }
+      });
+      this.canvas.addEventListener("pointerleave", (e) => {
+        if (!esRaton(e)) return;
+        this.puntero.activo = false;
+        this.arrastrado = null;
+      });
+      this.canvas.addEventListener("pointerdown", (e) => {
+        if (!esRaton(e)) return;
+        ubicar(e);
+        this.canvas.setPointerCapture(e.pointerId);
+        let cercano: Nodo | null = null;
+        let menor = 22;
+        for (const nodo of this.nodos) {
+          const d = Math.hypot(nodo.x - this.puntero.x, nodo.y - this.puntero.y);
+          if (d < menor) {
+            menor = d;
+            cercano = nodo;
+          }
+        }
+        this.arrastrado = cercano;
+        this.ondas.push({ x: this.puntero.x, y: this.puntero.y, r: 0, alpha: 1 });
+      });
+      this.canvas.addEventListener("pointerup", () => {
+        this.arrastrado = null;
+      });
+      this.canvas.addEventListener("dblclick", (e) => {
+        const caja = this.canvas.getBoundingClientRect();
+        this.puntero.x = e.clientX - caja.left;
+        this.puntero.y = e.clientY - caja.top;
+        this.puntero.modo *= -1;
+        this.ondas.push({
+          x: this.puntero.x,
+          y: this.puntero.y,
+          r: 0,
+          alpha: 1.2,
+        });
+      });
+    }
+
+    private actualizar(tiempo: number, dt: number) {
+      const cx = this.ancho / 2;
+      const cy = this.alto / 2;
+      const respiracion = Math.sin(tiempo * 0.00055 * this.velocidad) * 0.012;
+      const giro = 0.00042 * this.rotacion * this.velocidad * dt;
+      const cos = Math.cos(giro);
+      const sin = Math.sin(giro);
+
+      for (const nodo of this.nodos) {
+        const rx = nodo.x - cx;
+        const ry = nodo.y - cy;
+        const rox = nodo.ox - cx;
+        const roy = nodo.oy - cy;
+        nodo.x = cx + rx * cos - ry * sin;
+        nodo.y = cy + rx * sin + ry * cos;
+        nodo.ox = cx + rox * cos - roy * sin;
+        nodo.oy = cy + rox * sin + roy * cos;
+        if (nodo === this.arrastrado) continue;
+
+        // Resorte hacia el reposo + vaivén propio.
+        nodo.vx += (nodo.ox - nodo.x) * 0.00055 + (nodo.ox - cx) * respiracion * 0.0003;
+        nodo.vy += (nodo.oy - nodo.y) * 0.00055 + (nodo.oy - cy) * respiracion * 0.0003;
+        nodo.vx += Math.cos(tiempo * 0.00031 + nodo.phase) * 0.0018 * this.velocidad;
+        nodo.vy += Math.sin(tiempo * 0.00027 + nodo.phase) * 0.0018 * this.velocidad;
+
+        if (this.puntero.activo) {
+          const dx = nodo.x - this.puntero.x;
+          const dy = nodo.y - this.puntero.y;
+          const d = Math.max(16, Math.hypot(dx, dy));
+          const alcance = Math.min(this.ancho, this.alto) * 0.29;
+          if (d < alcance) {
+            const fuerza =
+              (1 - d / alcance) * 0.075 * this.interaccion * this.puntero.modo;
+            nodo.vx += (dx / d) * fuerza;
+            nodo.vy += (dy / d) * fuerza;
+          }
+        }
+
+        nodo.vx *= 0.974;
+        nodo.vy *= 0.974;
+        nodo.x += nodo.vx * dt;
+        nodo.y += nodo.vy * dt;
+      }
+
+      for (const onda of this.ondas) {
+        onda.r += dt * 0.85;
+        onda.alpha -= dt * 0.012;
+      }
+      this.ondas = this.ondas.filter((onda) => onda.alpha > 0);
+    }
+
+    private dibujar(tiempo: number) {
+      const c = this.ctx;
+      c.clearRect(0, 0, this.ancho, this.alto);
+      c.lineCap = "round";
+
+      const maximo = Math.min(this.ancho, this.alto) * 0.3;
+      for (const enlace of this.enlaces) {
+        const a = this.nodos[enlace.a];
+        const b = this.nodos[enlace.b];
+        if (!a || !b) continue;
+        if (Math.hypot(a.x - b.x, a.y - b.y) > maximo) continue;
+        const cerca = this.puntero.activo
+          ? 1 -
+            Math.min(
+              1,
+              Math.min(
+                Math.hypot(a.x - this.puntero.x, a.y - this.puntero.y),
+                Math.hypot(b.x - this.puntero.x, b.y - this.puntero.y),
+              ) / 130,
+            )
+          : 0;
+        const alpha = 0.12 + cerca * 0.42;
+        const degradado = c.createLinearGradient(a.x, a.y, b.x, b.y);
+        degradado.addColorStop(0, rgba(this.paleta[a.tema], alpha));
+        degradado.addColorStop(1, rgba(this.paleta[b.tema], alpha));
+        c.strokeStyle = degradado;
+        c.lineWidth = 0.55 + cerca * 1.1;
+        c.beginPath();
+        c.moveTo(a.x, a.y);
+        c.lineTo(b.x, b.y);
+        c.stroke();
+      }
+
+      for (const onda of this.ondas) {
+        c.strokeStyle = rgba(this.paleta[ACENTO], Math.max(0, onda.alpha));
+        c.lineWidth = 1.4;
+        c.beginPath();
+        c.arc(onda.x, onda.y, onda.r, 0, Math.PI * 2);
+        c.stroke();
+      }
+
+      for (const nodo of this.nodos) {
+        const color = this.paleta[nodo.tema];
+        const encima =
+          this.puntero.activo &&
+          Math.hypot(nodo.x - this.puntero.x, nodo.y - this.puntero.y) < 44;
+        const latido = 1 + Math.sin(tiempo * 0.002 + nodo.phase) * 0.15;
+        c.shadowColor = rgba(color, 1);
+        c.shadowBlur = encima ? 17 : 6 * nodo.depth;
+        c.fillStyle = rgba(color, 0.58 + nodo.depth * 0.42);
+        c.beginPath();
+        c.arc(nodo.x, nodo.y, nodo.r * latido * (encima ? 1.7 : 1), 0, Math.PI * 2);
+        c.fill();
+        c.shadowBlur = 0;
+      }
+    }
+
+    private animar(tiempo: number) {
+      // Al reanudar tras una pausa, `ultimo` es 0: se asume un cuadro normal.
+      const dt = this.ultimo ? Math.min(2.4, (tiempo - this.ultimo) / 16.7) : 1;
+      this.ultimo = tiempo;
+      this.actualizar(tiempo, dt);
+      this.dibujar(tiempo);
+      this.cuadro = requestAnimationFrame(this.animar);
+    }
+  }
+
+  if (!customElements.get("grafo-cerebral")) {
+    customElements.define("grafo-cerebral", GrafoCerebral);
+  }
+</script>
