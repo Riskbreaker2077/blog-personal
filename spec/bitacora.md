@@ -2,6 +2,54 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-02 · Sesión 10 — El sitio sale a producción
+
+**Qué se hizo**
+
+_Ilustración de portada._ El hueco del hero deja de ser un marcador de posición: lo ocupa `src/components/GrafoCerebral.astro`, un grafo animado en canvas. Llegó como componente suelto en `grafo/outputs/` y se reescribió para el proyecto:
+
+- Componente de Astro en vez de archivos en `public/`, para que Astro lo empaquete y solo se descargue donde se usa.
+- La paleta se lee de los tonos de tema (`--tone-accent`, `--tone-gold`, `--tone-peri`, `--tone-ink`, `--tone-muted`) con `getComputedStyle`, no escrita en el componente. Cada nodo es un tema editorial y el grafo sigue al tema claro/oscuro por un `MutationObserver` sobre `data-theme`.
+- `touch-action: pan-y` e interacción solo con ratón: el original usaba `touch-action: none` y en móvil el dedo no podía desplazar la portada.
+- El bucle se detiene fuera de pantalla (`IntersectionObserver`) y con `prefers-reduced-motion` dibuja un solo cuadro.
+- Sin marco ni pie. Se desborda hacia el texto y una máscara radial disuelve los bordes. Oculto bajo 47.5rem.
+
+_Puntuación por tema._ `src/lib/rehype-puntuacion.mjs`, plugin propio sin dependencias, envuelve los signos en `<span class="punct">` en tiempo de build. `PostLayout` los tiñe con el tono del post mezclado con la tinta al 70%.
+
+_Contenido._ Hero nuevo, línea de metadatos fuera, «Sobre» reescrita en tercera persona sin el hueco del retrato, bloque de redes (GitHub, Academia.edu, ORCID, LinkedIn), 2021 → 2026 en el pie y fuera el contador de entradas por año.
+
+_Imagen social._ Foto del Valle de Cocora de Bernard Gagnon (Wikimedia Commons), recortada a 1200×630 y servida como `/og.jpg`.
+
+_Despliegue (feature 004)._ El sitio está en línea en `https://blog.morenocaro.com`. El proceso real, en orden:
+
+1. `~/.ssh/config` con el alias `hostinger-blog`. Apareció un obstáculo tonto: `~/.ssh/config` existía como **carpeta vacía**, así que ningún intento de escribir el archivo funcionaba. `rmdir` y a otra cosa.
+2. `ssh hostinger-blog "ls -d ~/domains/*/public_html"` — la cuenta aloja cuatro dominios; el del blog es `~/domains/blog.morenocaro.com/public_html`, que solo tenía el `default.php` de bienvenida.
+3. Cuatro commits antes de publicar, para tener a dónde volver.
+4. `rsync -avzn` de simulacro: 29 archivos, un solo borrado (`default.php`), ningún otro dominio tocado.
+5. `rsync -avz --delete --backup-dir` de verdad. 473 KB enviados.
+6. Verificación por `curl`: diez rutas en 200, `http` → `https` en 301, 404 propia con `noindex`, canonical con barra final, RSS con enlaces absolutos, `og.jpg` sirviéndose y `max-age=31536000, immutable` en `/_astro/` —el `.htaccess` se aplicó.
+
+_RSS legible._ Tras publicar, el feed «no funcionaba»: era válido, pero el navegador enseñaba XML crudo. Se añadió `public/rss.xsl` y `stylesheet: "/rss.xsl"` en `rss.xml.ts`. Los lectores de feeds la ignoran.
+
+**Verificación**
+
+- ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints. Build de 10 páginas.
+- Producción comprobada con `curl` ruta por ruta (ver arriba).
+
+**Pendiente**
+
+- Decidir qué pasa con `grafo/` en la raíz: el componente ya vive en `src/`, así que la carpeta sobra.
+- Decidir si el grafo y la puntuación se formalizan como feature 005 o se absorben en la 000. Preguntado tres veces, sin respuesta todavía.
+- Republicar para que `rss.xsl` llegue al servidor.
+- Revisar el sitio en vivo en móvil y en modo oscuro.
+
+**Decisiones**
+
+- El grafo es una excepción consciente a «sin animaciones innecesarias»: es la ilustración de la portada, no un adorno sobre el contenido. Queda anotada en la dirección visual.
+- La foto social es CC BY-SA 4.0. La atribución es obligatoria y va en `/sobre/`, con los datos en `SITIO.creditoImagenSocial`. El recorte hereda esa licencia; no afecta a los textos, que siguen CC BY-NC 4.0.
+- El host, el usuario y el puerto **no entran al repositorio**. Viven en `~/.ssh/config` detrás del alias `hostinger-blog`, que es lo único que aparece en la documentación.
+- La puntuación se tiñe mezclada con la tinta, no a color pleno: el oro puro sobre papel crema dejaba comas invisibles y una coma que no se ve cambia cómo se lee la frase.
+
 ## 2026-08-01 · Sesión 9 — Preparación del despliegue (feature 004)
 
 **Qué se hizo**

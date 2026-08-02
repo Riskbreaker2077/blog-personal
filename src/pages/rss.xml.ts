@@ -14,6 +14,9 @@ export async function GET(context: APIContext) {
     description: SITIO.descripcion,
     site: context.site!,
     trailingSlash: true,
+    // Sin esto, un navegador enseña el XML crudo y parece que el feed falla.
+    // Los lectores de RSS la ignoran.
+    stylesheet: "/rss.xsl",
     // `<author>` de RSS 2.0 exige un correo; Dublin Core permite firmar con
     // nombre y es lo que leen los agregadores.
     xmlns: { dc: "http://purl.org/dc/elements/1.1/" },

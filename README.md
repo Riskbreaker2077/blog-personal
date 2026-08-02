@@ -2,6 +2,8 @@
 
 Blog personal de Camilo Moreno: pensamiento largo en español sobre filosofía, educación, mundo editorial e inteligencia artificial.
 
+**En línea: [blog.morenocaro.com](https://blog.morenocaro.com)** · [feed RSS](https://blog.morenocaro.com/rss.xml)
+
 ## Identidad
 
 El proyecto combina un **archivo editorial sereno** con **acentos retrofuturistas**. La lectura es la prioridad; la línea cronológica —la “línea del pensamiento”— organiza el archivo y funciona como firma visual.
@@ -20,13 +22,15 @@ La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/
 
 ## Estado
 
-La base visual, el núcleo editorial, el archivo navegable y la capa de distribución ya están implementados. El primer texto real está publicado. Falta desplegar.
+**El blog está publicado desde el 2 de agosto de 2026.** Las cinco features del roadmap inicial están implementadas.
 
 1. **000 · Fundamento visual y técnico** — implementada.
 2. **001 · Núcleo editorial publicable** — implementada.
 3. **002 · Índice, archivo y temas** — implementada.
-4. **003 · Distribución e indexación** — implementada; falta la imagen social.
-5. **004 · Despliegue en Hostinger** — preparada; falta la subida.
+4. **003 · Distribución e indexación** — implementada.
+5. **004 · Despliegue en Hostinger** — implementada; el sitio está en línea.
+
+Escribir ya solo requiere un `.md`, un commit y tres comandos.
 
 Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
 
@@ -51,15 +55,15 @@ Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadma
 
 ```text
 src/
-├── components/         navegación, footer, cronología y filtro de temas
+├── components/         navegación, footer, cronología, filtro de temas y grafo de portada
 ├── content/posts/      posts en Markdown
 ├── data/               temas editoriales e identidad del sitio
 ├── layouts/            layout raíz y layout de lectura
-├── lib/                helpers de posts, fechas, agrupación y tiempo de lectura
+├── lib/                helpers de posts y el plugin de puntuación
 ├── pages/              índice, archivo, «Sobre», /temas/<tema>/, /posts/<id>/, /rss.xml y 404
 └── styles/             tokens y estilos globales
 
-public/                 assets estáticos y robots.txt
+public/                 assets estáticos, robots.txt, .htaccess, og.jpg y rss.xsl
 spec/                   constitución, diseño, features y bitácora
 referente-de-diseno/    archivo histórico; fuera del build
 ```
@@ -74,6 +78,8 @@ referente-de-diseno/    archivo histórico; fuera del build
 ## Publicar
 
 El sitio se publica en `https://blog.morenocaro.com` subiendo **solo `dist/`** por SSH + `rsync`. El procedimiento, la verificación y el rollback están en [`spec/despliegue.md`](spec/despliegue.md). Nada se sube sin aprobación explícita.
+
+Las credenciales no están en el repositorio: viven en `~/.ssh/config` de la máquina, detrás del alias `hostinger-blog`.
 
 ## Principios
 

@@ -37,6 +37,10 @@ _Mapa breve de dónde vive cada cosa. Solo lo que un recién llegado necesita pa
 - `src/components/Topbar.astro` — navegación superior.
 - `src/components/Cronologia.astro` — línea del pensamiento: años, marcadores y filas de post. La comparten índice y páginas de tema.
 - `src/components/FiltroTemas.astro` — fila de filtros. Son enlaces a `/temas/<tema>/`, sin JavaScript.
+- `src/components/GrafoCerebral.astro` — ilustración animada de la portada. Único componente del sitio con JavaScript propio; lee su paleta de los tonos de tema.
+- `src/lib/rehype-puntuacion.mjs` — plugin de rehype, en tiempo de build: envuelve los signos de puntuación del cuerpo de los posts para que tomen el color del tema. Se registra en `markdown.rehypePlugins`.
+- `public/og.jpg` — imagen de las tarjetas al compartir, 1200×630. CC BY-SA 4.0, con crédito obligatorio en `/sobre/`.
+- `public/rss.xsl` — hoja de estilos del feed. Solo la aplica un navegador; sin ella, `/rss.xml` se ve como XML crudo.
 - `src/data/temas.ts` — temas editoriales: etiqueta, abreviatura, tono de color y descripción de una línea.
 - `public/` — assets estáticos servidos tal cual (favicon, imágenes sueltas).
 - `spec/` — documentación del proyecto (specs, features, constitución, bitácora).
@@ -84,6 +88,7 @@ _Entidad central del blog._
 - Tipografía: Newsreader para lectura; IBM Plex Mono para fechas, temas y metadatos.
 - Ancho de lectura: máx. ~70 caracteres por línea en desktop. Móvil: a una columna, tipografía generosa.
 - Sin animaciones innecesarias. Sin parallax. Los degradados se limitan al fondo fijo, los marcos de imagen, la línea del pensamiento y el borde del footer.
+- **Única excepción a lo anterior:** el grafo de la portada (`GrafoCerebral.astro`). Es la ilustración, no un adorno superpuesto al contenido: no se mueve nada del texto, se detiene fuera de pantalla, respeta `prefers-reduced-motion` y no existe en móvil. Cualquier otra animación vuelve a necesitar discusión.
 - El tema se resuelve con un script inline en `<head>` (evita el parpadeo) y se persiste en `localStorage` bajo la clave `tema`.
 - Licencia del contenido editorial: CC BY-NC 4.0.
 

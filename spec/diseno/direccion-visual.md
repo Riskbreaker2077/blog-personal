@@ -61,6 +61,27 @@ Las fuentes se sirven desde el propio dominio, sin CDN de terceros.
 
 La **línea del pensamiento** conecta años, fechas y entradas. Es el elemento reconocible del sitio y representa la evolución de las ideas en el tiempo. Debe aportar estructura, no actuar como adorno.
 
+### Grafo de la portada
+
+_Añadido el 2 de agosto de 2026._
+
+La ilustración del hero es un grafo de nodos conectados que se mueve despacio y reacciona al cursor. **Es la única animación del sitio y una excepción consciente al criterio «sin animaciones innecesarias»** de la constitución. Se admite porque:
+
+- Es la ilustración de la portada, no un efecto sobre el contenido. Nada del texto se mueve.
+- Cada nodo lleva el color de un tema editorial, leído de los mismos tokens que los marcadores de la cronología. El grafo no es decoración abstracta: es el mapa de lo que se escribe aquí.
+- No termina en ningún borde. Sin marco ni pie, con una máscara radial que apaga los nodos en los cuatro lados.
+- Se detiene fuera de pantalla, respeta `prefers-reduced-motion` y no se muestra en móvil, donde no tiene sobre qué desbordarse.
+
+Cualquier animación futura vuelve a discutirse desde cero. Esta no sienta precedente.
+
+### Puntuación teñida
+
+_Añadido el 2 de agosto de 2026._
+
+En el cuerpo de un post, los signos de puntuación toman el tono del tema. Es lo único que recorre un texto entero sin pertenecer a ninguna palabra, así que el tema se nota sin invadir la lectura.
+
+El tono va **mezclado con la tinta al 70%**, nunca a color pleno: el oro sobre papel crema deja comas prácticamente invisibles, y una coma que no se ve cambia cómo se lee la frase. El tema `general` no tiñe nada. Dentro de enlaces y citas manda el color del bloque.
+
 ## Criterios transversales
 
 - Lectura de aproximadamente 65–70 caracteres por línea.
@@ -78,5 +99,5 @@ La **línea del pensamiento** conecta años, fechas y entradas. Es el elemento r
 - **Post:** tema, fecha, tiempo de lectura, título, descripción, portada opcional, cuerpo y navegación contigua.
 - **Archivo:** línea cronológica y entradas agrupadas por año.
 - **Tema:** listado editorial estable, incluso cuando esté vacío.
-- **Sobre:** retrato opcional, biografía, intención y contacto.
+- **Sobre:** biografía, trayectoria y perfiles externos. Sin retrato: el hueco se retiró el 2 de agosto de 2026 por no tener con qué llenarlo.
 - **404:** breve, útil y coherente con la voz del sitio.

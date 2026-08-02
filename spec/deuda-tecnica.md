@@ -12,17 +12,28 @@ _Lista de compromisos, atajos y cosas pendientes que se sabe que hay que pagar d
 - **Mitigación prevista** — subir el Node de Windows a 22 LTS (o 24) y volver a instalar con el pnpm pineado. Se revisa al preparar la 004, que es donde el entorno de build importa de verdad.
 - **Severidad** — media: no rompe nada hoy, pero cualquiera que clone el repo con otro Node verá un árbol distinto.
 
-### Imagen social sin crear
+### Código en producción sin carpeta de feature
 
-- **Fecha** — 1 de agosto de 2026.
-- **Origen** — feature 003.
-- **Síntoma** — `og:image` y `twitter:image` apuntan a `/og.png`, que todavía no existe. Al compartir un enlace, la tarjeta sale sin imagen.
-- **Mitigación prevista** — Camilo crea el PNG de 1200×630 y lo deja en `public/og.png`. No hay que tocar código.
-- **Severidad** — baja: cosmética y acotada a cómo se ve un enlace compartido.
+- **Fecha** — 2 de agosto de 2026.
+- **Origen** — sesión 10: grafo de portada y puntuación por tema.
+- **Síntoma** — `src/components/GrafoCerebral.astro` y `src/lib/rehype-puntuacion.mjs` están publicados sin `spec.md`, `plan.md` ni `tasks.md`. Contradice la primera regla dura de `CLAUDE.md`, que exige la carpeta antes de tocar el código de una feature.
+- **Mitigación prevista** — crear `spec/features/005-ilustracion-y-puntuacion/` a posteriori, o absorber ambos en la 000 si se consideran acabado visual. Decisión de Camilo; preguntada tres veces en la sesión sin respuesta.
+- **Severidad** — media: el código funciona y está documentado en la bitácora y en la dirección visual, pero el proyecto pierde su garantía de trazabilidad.
+
+### La imagen social obliga a mantener una atribución
+
+- **Fecha** — 2 de agosto de 2026.
+- **Origen** — sesión 10.
+- **Síntoma** — `public/og.jpg` es CC BY-SA 4.0 de Bernard Gagnon. Exige crédito visible, que hoy vive en `/sobre/`. Si alguien cambia la foto y olvida el crédito, o rediseña `/sobre/` y se lo lleva por delante, el sitio queda en incumplimiento de licencia.
+- **Mitigación prevista** — sustituirla por una imagen propia, que elimina la obligación. Mientras tanto, los datos están centralizados en `SITIO.creditoImagenSocial` para que el crédito no se pueda desincronizar de la foto.
+- **Severidad** — baja, pero legal y no técnica: no se detecta con un build.
 
 ## Resuelta
 
-_Ninguna todavía._
+### Imagen social sin crear
+
+- **Abierta** el 1 de agosto de 2026 (feature 003); **resuelta** el 2 de agosto de 2026.
+- `og:image` apuntaba a `/og.png`, que no existía. Se resolvió con una foto del Valle de Cocora recortada a 1200×630 y servida como `/og.jpg` —JPEG y no PNG: una fotografía en PNG pesaría más de 1 MB sin verse mejor.
 
 ## Formato de entrada
 
