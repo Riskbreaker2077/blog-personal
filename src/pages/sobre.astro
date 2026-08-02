@@ -1,70 +1,89 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITIO } from "../data/sitio";
+
+const credito = SITIO.creditoImagenSocial;
 ---
 
 <BaseLayout
   title="Sobre — Camilo Moreno"
-  description="El propósito y la voz detrás de la bitácora de Camilo Moreno."
+  description="Camilo Moreno: docente de Ciencias Sociales y filosofía, doctorando en filosofía en la Universidad del Valle y co-fundador de Sof.IA Servicios Editoriales."
 >
-  <div class="about-grid">
-    <figure class="portrait-figure">
-      <div class="img-frame" style="aspect-ratio: 3 / 4">
-        <div>Retrato — 3:4</div>
-      </div>
-      <figcaption class="img-caption">retrato</figcaption>
-    </figure>
+  <div class="about-body">
+    <h1>Sobre <em>Camilo Moreno</em></h1>
 
-    <div class="about-body">
-      <h1>Hola, soy <em>Camilo</em>.</h1>
+    <p>
+      Camilo Moreno es docente de Ciencias Sociales (y filosofía) en la
+      Institución Educativa Santa Teresa de Jesús (Armenia, Quindío), una
+      institución que en la práctica ofrece a los estudiantes herramientas para
+      empoderarse sobre su realidad.
+    </p>
 
-      <p>
-        Escribo sobre los temas que me obsesionan: la pregunta por la técnica,
-        la pedagogía como práctica filosófica y lo que los modelos de lenguaje
-        nos obligan a reformular sobre qué cosa es pensar.
-      </p>
+    <p>
+      En la actualidad, Camilo adelanta un doctorado en filosofía en la
+      Universidad del Valle, donde investiga el concepto de adoctrinamiento
+      desde la perspectiva de la filosofía social para encontrar lineamientos
+      para la formación política. Una de sus preocupaciones centrales es el
+      estudio de las condiciones que deben cultivarse para el florecimiento de
+      las sociedades democráticas.
+    </p>
 
-      <p>
-        Me interesan la filosofía, la educación y el mundo editorial; también
-        las transformaciones que introduce la inteligencia artificial en la
-        lectura, la escritura y el trabajo intelectual.
-      </p>
+    <p>
+      Además, es co-fundador de Sof.IA Servicios Editoriales, una empresa que
+      ofrece asesoría sobre implementación de la inteligencia artificial en los
+      procesos editoriales. Como tal, es consciente de las oportunidades que
+      ofrece la inteligencia artificial en la difusión y construcción del
+      conocimiento y de los retos que las nuevas tecnologías significan con
+      respecto a temas sensibles como la seguridad, la integración en los
+      procesos y el control de calidad.
+    </p>
 
-      <p>
-        Esta bitácora no tiene calendario, ni newsletter, ni métricas. No es una
-        vitrina de respuestas definitivas: es un archivo de pensamiento que
-        conserva sus cambios de dirección.
-      </p>
+    <h2 class="redes-titulo">Redes</h2>
+    {/* `rel="me"` declara que estos perfiles son la misma persona que firma el sitio. */}
+    <ul class="redes">
+      <li>
+        <span class="red">GitHub</span>
+        <a href="https://github.com/Riskbreaker2077" rel="me">Riskbreaker2077</a>
+      </li>
+      <li>
+        <span class="red">Academia.edu</span>
+        <a
+          href="https://universidaddelvallecolombia.academia.edu/CamiloMoreno"
+          rel="me">Camilo Moreno</a
+        >
+      </li>
+      <li>
+        <span class="red">ORCID</span>
+        <a href="https://orcid.org/0000-0002-6931-8688" rel="me"
+          >0000-0002-6931-8688</a
+        >
+      </li>
+      <li>
+        <span class="red">LinkedIn</span>
+        <a href="https://www.linkedin.com/in/camilomoren69/" rel="me"
+          >camilomoren69</a
+        >
+      </li>
+    </ul>
 
-      <dl class="about-facts">
-        <dt>Vive en</dt>
-        <dd>Quindío, Colombia</dd>
-        <dt>Escribe sobre</dt>
-        <dd>filosofía, educación, edición e IA</dd>
-        <dt>Escribiendo</dt>
-        <dd>desde 2021</dd>
-        <dt>Lee</dt>
-        <dd>despacio, releyendo</dd>
-      </dl>
+    {/* La licencia CC BY-SA de la imagen que se ve al compartir exige el crédito. */}
+    <p class="credito">
+      La imagen que acompaña a este sitio al compartirlo es <a
+        href={credito.fuente}
+        rel="license noopener">{credito.obra}</a
+      >, de {credito.autor}, recortada.
+      <a href={credito.licencia} rel="license noopener"
+        >{credito.licenciaNombre}</a
+      >.
+    </p>
 
-      <p class="nota">
-        Biografía y medios de contacto se confirman antes de publicar el sitio.
-      </p>
-
-      <a class="back-link" href="/">← volver al índice</a>
-    </div>
+    <a class="back-link" href="/">← volver al índice</a>
   </div>
 </BaseLayout>
 
 <style>
-  .about-grid {
-    display: grid;
-    grid-template-columns: 13.75rem 1fr;
-    gap: 3.5rem;
+  .about-body {
     max-width: 51.25rem;
-  }
-
-  .portrait-figure {
-    margin: 0;
   }
 
   h1 {
@@ -80,43 +99,80 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: var(--accent);
   }
 
-  .about-body > p:not(.nota) {
+  .about-body > p {
     max-width: var(--max-content);
     margin: 0 0 1em;
     color: var(--ink-2);
   }
 
-  .about-facts {
-    display: grid;
-    grid-template-columns: 6.25rem 1fr;
-    gap: 0.5rem 1.5rem;
-    margin: 1.75rem 0 0;
+  .redes-titulo {
+    margin: 2.25rem 0 0;
     padding-top: 1.25rem;
     border-top: 1px solid var(--rule);
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-  }
-
-  .about-facts dt {
-    padding-top: 3px;
     color: var(--muted);
+    font-family: var(--font-mono);
     font-size: 0.68rem;
+    font-weight: 400;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  .about-facts dd {
-    margin: 0;
+  .redes {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.5rem 1.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
   }
 
-  .nota {
-    max-width: var(--max-content);
-    margin: 1.75rem 0 0;
-    padding-left: 1.5rem;
-    border-left: 3px solid var(--gold);
+  /* Cada <li> ocupa las dos columnas y reparte etiqueta y enlace en la retícula. */
+  .redes li {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .red {
     color: var(--muted);
-    font-size: 0.95rem;
-    font-style: italic;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  .redes a {
+    color: var(--ink-2);
+    text-underline-offset: 0.25em;
+    text-decoration-color: var(--rule);
+    transition: color 0.2s;
+    justify-self: start;
+  }
+
+  .redes a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+
+  .credito {
+    max-width: var(--max-content);
+    margin: 2.75rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule-soft);
+    color: var(--muted-2);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .credito a {
+    color: inherit;
+    text-underline-offset: 0.25em;
+  }
+
+  .credito a:hover {
+    color: var(--accent);
   }
 
   .back-link {
@@ -141,13 +197,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (max-width: 43.75rem) {
-    .about-grid {
+    /* La etiqueta de cada red pasa encima del enlace en vez de a su lado. */
+    .redes {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1rem;
     }
 
-    .portrait-figure {
-      max-width: 13.75rem;
+    .redes li {
+      grid-template-columns: 1fr;
+      gap: 0.125rem;
     }
   }
 </style>

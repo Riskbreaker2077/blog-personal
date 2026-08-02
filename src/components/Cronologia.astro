@@ -1,11 +1,6 @@
 ---
 import { TEMAS } from "../data/temas";
-import {
-  contarEntradas,
-  formatearFecha,
-  tiempoDeLectura,
-  type GrupoAnual,
-} from "../lib/posts";
+import { formatearFecha, tiempoDeLectura, type GrupoAnual } from "../lib/posts";
 
 interface Props {
   grupos: GrupoAnual[];
@@ -20,7 +15,6 @@ const { grupos } = Astro.props;
       <>
         <div class="year">
           <p class="year-num">{grupo.anio}</p>
-          <p class="year-caption">{contarEntradas(grupo.posts.length)}</p>
         </div>
 
         {grupo.posts.map((post) => (
@@ -95,16 +89,6 @@ const { grupos } = Astro.props;
     font-variant-numeric: lining-nums;
   }
 
-  .year-caption {
-    margin: 0;
-    padding-left: 1.5rem;
-    border-left: 1px solid var(--rule);
-    color: var(--muted-2);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
 
   .row {
     position: relative;

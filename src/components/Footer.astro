@@ -1,11 +1,16 @@
 ---
+/** Año de la primera entrada del blog. */
+const INICIO = 2026;
+
 const anio = new Date().getFullYear();
+// Mientras no pase de 2026 no hay rango que mostrar: sería «2026–2026».
+const rango = anio > INICIO ? `${INICIO}–${anio}` : `${INICIO}`;
 ---
 
 <footer class="footer">
   <p class="colophon">Hecho con 🫰 desde el Quindío.</p>
   <p class="meta">
-    <a href="/rss.xml">rss</a> · © 2021–{anio} · Contenido
+    <a href="/rss.xml">rss</a> · © {rango} · Contenido
     <abbr title="Creative Commons Atribución-NoComercial 4.0">CC BY-NC 4.0</abbr
     >
   </p>
