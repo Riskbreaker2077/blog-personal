@@ -47,7 +47,11 @@ const imagenSocial = new URL(imagen, Astro.site);
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    {/*
+      `initial-scale=1` no es opcional: sin él, si algo desborda a lo ancho, el
+      navegador móvil encoge la página entera para que quepa en vez de recortarla.
+    */}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
     <meta id="theme-color" name="theme-color" content="#f7f4ee" />

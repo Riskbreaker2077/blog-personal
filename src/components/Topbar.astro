@@ -119,13 +119,20 @@ const links = [
    * es papel translúcido + desenfoque: lo que borra el texto es el desenfoque,
    * no la opacidad, y los degradados siguen asomando.
    *
-   * Se extiende de borde a borde porque el `.shell` es más estrecho que la
-   * ventana, y sobresale por abajo para que la máscara tenga dónde apagarse.
+   * Va `fixed` y anclado a la ventana, no `absolute` con márgenes
+   * negativos en `vw`: eso lo dejaba 100vw más ancho que la
+   * barra y ensanchaba la maquetación entera. En móvil el navegador respondía
+   * encogiendo la página para que cupiera, con una franja muerta a la derecha.
+   * Con `left: 0; right: 0` el velo mide exactamente la ventana y no puede
+   * desbordarse por definición.
    */
   .topbar::before {
-    position: absolute;
+    position: fixed;
     z-index: -1;
-    inset: -3rem -50vw -1.75rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 7.5rem;
     backdrop-filter: blur(7px);
     background: linear-gradient(
       to bottom,
