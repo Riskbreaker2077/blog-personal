@@ -11,7 +11,8 @@ _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de rellen
 - **Borrada `grafo/`** de la raíz. Era el componente original suelto; vive reescrito en `src/components/`.
 - **Creada `spec/features/005-ilustracion-y-puntuacion/`** con `spec.md`, `plan.md` y `tasks.md`, y movida a «Hecho» en el roadmap. Cierra la deuda de tener código en producción sin carpeta de feature. La `spec.md` abre con una nota de procedimiento: se escribió después del código, y eso queda dicho en vez de disimulado.
 - **`npm run publicar`** (`scripts/publicar.sh`): avisa si hay cambios sin commitear, construye por `cmd.exe`, enseña el simulacro con las líneas `deleting` aparte, pide confirmación antes de tocar el servidor y verifica las rutas al terminar.
-- Iniciada la subida de Node en Windows a la línea LTS. Estaba instalado como `OpenJS.NodeJS.20`, anclado a la 20: por eso `winget upgrade` nunca lo iba a mover de major.
+- **Cerrada la deuda del entorno de instalación.** Node en Windows estaba instalado como `OpenJS.NodeJS.20`, anclado a la línea 20: por eso `winget upgrade` nunca lo iba a mover de major. Se instaló `OpenJS.NodeJS.LTS` —hoy **24.18.1**, con npm 11.16.0— y se reinstaló desde cero con el `pnpm@11.9.0` que el proyecto pinea. Esta vez **sí se ejecutaron los scripts de compilación de `esbuild` y `sharp`**, que era justo lo que pnpm 10 se saltaba por no entender `allowBuilds`. El lockfile no cambió: pnpm 11 resolvió el mismo árbol, así que la instalación vuelve a ser reproducible.
+- `engines.node` en `package.json` pasa de `>=20.3.0` a `>=22.13.0`, que es lo que de verdad hace falta.
 
 **Verificación**
 

@@ -22,15 +22,16 @@ La dirección aprobada está en [`spec/diseno/direccion-visual.md`](spec/diseno/
 
 ## Estado
 
-**El blog está publicado desde el 2 de agosto de 2026.** Las cinco features del roadmap inicial están implementadas.
+**El blog está publicado desde el 2 de agosto de 2026.** Las cinco features del roadmap inicial están implementadas, más una sexta que salió del uso.
 
 1. **000 · Fundamento visual y técnico** — implementada.
 2. **001 · Núcleo editorial publicable** — implementada.
 3. **002 · Índice, archivo y temas** — implementada.
 4. **003 · Distribución e indexación** — implementada.
 5. **004 · Despliegue en Hostinger** — implementada; el sitio está en línea.
+6. **005 · Ilustración de portada y puntuación temática** — implementada.
 
-Escribir ya solo requiere un `.md`, un commit y tres comandos.
+Escribir ya solo requiere un `.md`, un commit y `npm run publicar`.
 
 Consulta el detalle en [`spec/constitution/roadmap.md`](spec/constitution/roadmap.md).
 
@@ -105,6 +106,6 @@ Las credenciales no están en el repositorio: viven en `~/.ssh/config` de la má
 
 ## Prerrequisitos previstos
 
-- Node 22 LTS.
+- Node ≥ 22.13 (hoy: 24.18.1). Lo exige el pnpm pineado.
 - pnpm.
 - Git.

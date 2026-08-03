@@ -6,7 +6,7 @@ _Cómo está construido el proyecto y las reglas que todo el código debe respet
 
 - **Lenguaje:** TypeScript estricto (Astro lo exige por defecto).
 - **Framework:** Astro 5.x, fijado a una versión exacta en `package.json`, con Content Layer y posts en Markdown. La versión exacta se elige al implementar la feature 000 y no se actualiza de major sin modificar esta constitución.
-- **Runtime / gestor de paquetes:** Node 22 LTS + pnpm (la elección de pnpm es por velocidad y por menor espacio en disco; se puede revisar si surge fricción).
+- **Runtime / gestor de paquetes:** Node LTS + pnpm fijado en `packageManager`. El pnpm pineado exige **Node ≥ 22.13** por `node:sqlite`; con menos, la instalación se degrada en silencio y deja de ejecutar los scripts de compilación de `esbuild` y `sharp`.
 - **Integraciones Astro:** `@astrojs/rss` y `@astrojs/sitemap`, ambas oficiales y fijadas a versión exacta. Cualquier otra se discute antes de instalarse.
 - **Estilos:** CSS plano con variables CSS en `src/styles/global.css`. Sin Tailwind, sin frameworks de UI en esta primera fase.
 - **Tipografía:** Newsreader para títulos y cuerpo; IBM Plex Mono o JetBrains Mono para metadatos. La monoespaciada final y la estrategia de carga se validan en la feature 000.
@@ -60,7 +60,7 @@ Todos se ejecutan desde la raíz del proyecto.
 
 ### Desde WSL, ojo
 
-El repositorio vive en `/mnt/c`, pero `node_modules` tiene los binarios de **Windows**. Lanzar Astro con el Node de Linux falla con `Cannot find module @rollup/rollup-linux-x64-gnu`, que **no indica nada roto en el código**: es el intérprete equivocado.
+El repositorio vive en `/mnt/c`, pero `node_modules` se instala desde Windows y tiene sus binarios. Lanzar Astro con el Node de Linux falla con `Cannot find module @rollup/rollup-linux-x64-gnu`, que **no indica nada roto en el código**: es el intérprete equivocado.
 
 | Comando | WSL | Windows |
 |---|---|---|
@@ -68,7 +68,9 @@ El repositorio vive en `/mnt/c`, pero `node_modules` tiene los binarios de **Win
 | `astro dev` / `build` / `check` | Solo vía `cmd.exe /c "node_modules\.bin\astro.cmd <sub>"` | ✅ `npm run <sub>` |
 | `git`, `ssh`, `rsync` | ✅ | — |
 
-Lo cómodo para escribir es abrir PowerShell en la carpeta del proyecto y usar `npm run dev` ahí. La causa de fondo está en [`spec/deuda-tecnica.md`](../deuda-tecnica.md): el Node de Windows es 20.18.0 y el pnpm pineado exige 22.13.
+Lo cómodo para escribir es abrir PowerShell en la carpeta del proyecto y usar `npm run dev` ahí.
+
+Ojo: **instala siempre desde Windows**. Si instalas desde WSL, `node_modules` se llena de binarios de Linux y entonces lo que se rompe es el build por `cmd.exe`. El problema no es qué mitad usar, sino mezclarlas.
 
 ## Modelo de datos / dominio
 
