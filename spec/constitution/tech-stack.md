@@ -56,6 +56,7 @@ Todos se ejecutan desde la raíz del proyecto.
 - `pnpm preview` — sirve `dist/` localmente para verificar el build de producción.
 - `pnpm lint` — corre ESLint sobre el código.
 - `pnpm astro check` — validación de tipos sobre `.astro` y TypeScript.
+- `npm run publicar` — **desde WSL.** Construye, enseña el simulacro, pide confirmación, sube y verifica. Es `scripts/publicar.sh`; el procedimiento manual equivalente está en [`spec/despliegue.md`](../despliegue.md).
 
 ### Desde WSL, ojo
 

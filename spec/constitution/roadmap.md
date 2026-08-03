@@ -10,12 +10,7 @@ _Orden y estado de las features. Solo hay una feature siguiente a la vez._
 4. **003 · Distribución e indexación** — RSS, sitemap, `robots.txt`, canonical, Open Graph, `BlogPosting` y 404. Imagen social resuelta el 2 de agosto de 2026.
 5. **004 · Despliegue en Hostinger** — dominio, build de producción, publicación, verificación y rollback documentado. **El sitio está en línea en `https://blog.morenocaro.com` desde el 2 de agosto de 2026.**
 
-## Sin feature asignada ⚠️
-
-Trabajo hecho el 2 de agosto de 2026 sobre un sitio ya publicado, sin carpeta en `spec/features/`. Está pendiente decidir si se formaliza como feature 005 o se absorbe en la 000:
-
-- **Grafo de ideas de la portada** — `src/components/GrafoCerebral.astro`.
-- **Puntuación teñida con el color del tema** — `src/lib/rehype-puntuacion.mjs`.
+6. **005 · Ilustración de portada y puntuación temática** — grafo de ideas en el hero y signos de puntuación teñidos con el tono del tema. La carpeta se escribió después del código; ver la nota de procedimiento en su `spec.md`.
 
 ## Siguiente 🔜
 

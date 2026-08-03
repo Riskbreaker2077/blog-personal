@@ -2,6 +2,27 @@
 
 _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de relleno: qué se hizo, qué quedó pendiente, qué decisiones se tomaron._
 
+## 2026-08-02 · Sesión 12 — Cierre: móvil, feature 005 y publicación en un comando
+
+**Qué se hizo**
+
+- **Arreglado el desbordamiento en móvil** que introdujo la cabecera fija. El velo usaba `inset: -3rem -50vw`, lo que lo dejaba 100vw más ancho que la barra. `overflow-x: hidden` en el `body` evita la barra de desplazamiento pero **no impide que crezca el ancho de maquetación**: el navegador móvil respondía encogiendo la página entera, con una franja muerta a la derecha. Ahora el velo va `fixed` con `left: 0; right: 0`, que mide exactamente la ventana y no puede desbordarse por definición. Confirmado en dispositivo.
+- Al `<meta name="viewport">` le faltaba `initial-scale=1`, que es justo lo que impide ese reajuste automático. Añadido.
+- **Borrada `grafo/`** de la raíz. Era el componente original suelto; vive reescrito en `src/components/`.
+- **Creada `spec/features/005-ilustracion-y-puntuacion/`** con `spec.md`, `plan.md` y `tasks.md`, y movida a «Hecho» en el roadmap. Cierra la deuda de tener código en producción sin carpeta de feature. La `spec.md` abre con una nota de procedimiento: se escribió después del código, y eso queda dicho en vez de disimulado.
+- **`npm run publicar`** (`scripts/publicar.sh`): avisa si hay cambios sin commitear, construye por `cmd.exe`, enseña el simulacro con las líneas `deleting` aparte, pide confirmación antes de tocar el servidor y verifica las rutas al terminar.
+- Iniciada la subida de Node en Windows a la línea LTS. Estaba instalado como `OpenJS.NodeJS.20`, anclado a la 20: por eso `winget upgrade` nunca lo iba a mover de major.
+
+**Verificación**
+
+- ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints. Build de 10 páginas.
+- Móvil comprobado por Camilo tras publicar: márgenes iguales y navegación pegada al borde.
+
+**Decisiones**
+
+- El script de publicación **no sustituye** al procedimiento manual de `spec/despliegue.md`: lo automatiza. Los comandos sueltos siguen documentados porque el día que algo falle harán falta.
+- El script pregunta antes de subir, siempre. Publicar es la única acción de este proyecto que no se puede deshacer con un `git checkout`.
+
 ## 2026-08-02 · Sesión 11 — Cabecera fija y marca que se contrae
 
 **Qué se hizo**

@@ -85,7 +85,13 @@ referente-de-diseno/    archivo histórico; fuera del build
 
 ## Publicar
 
-El sitio se publica en `https://blog.morenocaro.com` subiendo **solo `dist/`** por SSH + `rsync`. El procedimiento, la verificación y el rollback están en [`spec/despliegue.md`](spec/despliegue.md). Nada se sube sin aprobación explícita.
+Desde WSL:
+
+```bash
+npm run publicar
+```
+
+Construye, enseña el simulacro, **pide confirmación** y verifica las rutas al terminar. Se publica **solo `dist/`** por SSH + `rsync` en `https://blog.morenocaro.com`. El procedimiento a mano, la verificación y el rollback están en [`spec/despliegue.md`](spec/despliegue.md).
 
 Las credenciales no están en el repositorio: viven en `~/.ssh/config` de la máquina, detrás del alias `hostinger-blog`.
 

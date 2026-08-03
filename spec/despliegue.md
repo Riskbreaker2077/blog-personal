@@ -70,7 +70,19 @@ _Hecho el 2 de agosto de 2026. Se conserva por si algún día hay que repetirlo 
 
 ## Publicar
 
-Desde la raíz del proyecto, en WSL:
+### La forma corta
+
+Desde WSL, en la raíz del proyecto:
+
+```bash
+npm run publicar
+```
+
+`scripts/publicar.sh` hace los tres pasos de abajo en orden: avisa si hay cambios sin commitear, construye, enseña el simulacro con las líneas `deleting` aparte, **pide confirmación antes de tocar el servidor** y verifica las rutas al terminar. No hace nada que no puedas hacer a mano; solo evita que se olvide un paso.
+
+### A mano
+
+Sigue documentado porque cuando algo falle, vas a necesitar los comandos sueltos. Desde la raíz del proyecto, en WSL:
 
 ```bash
 # 1. Construir. Ojo: el build va por el Node de Windows.
