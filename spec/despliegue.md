@@ -162,6 +162,9 @@ Conviene borrar los backups viejos de vez en cuando: ocupan lo mismo que el siti
 
 | Síntoma | Qué pasa de verdad |
 |---|---|
+| `/sbin/nologin` y `rsync error … (code 12)` | El acceso SSH está desactivado en hPanel. La clave está bien: el servidor acepta la conexión y la cierra en el acto. Se reactiva en **Avanzado → Acceso SSH**, y conviene comprobar que la clave pública sigue en la lista |
+| `Connection refused`, o `nologin` justo después de que todo funcionara | **Hostinger cambió la cuenta de servidor.** Pasó el 2 de agosto de 2026. El usuario, el puerto y la clave no cambian; solo la IP. Se copia la nueva de hPanel al `HostName` de `~/.ssh/config` y listo |
+| Tras migrar de servidor, el simulacro lista **todos** los archivos | La migración cambió las fechas de modificación y `rsync` compara por tamaño y fecha. Se resubirá todo una vez y volverá a la normalidad. Lo que hay que mirar son las líneas `deleting`, no las de envío |
 | `/rss.xml` sale como un muro de XML | El navegador no sabe qué hacer con un feed. Se resolvió con `public/rss.xsl`, que solo aplica el navegador: los lectores de RSS la ignoran |
 | Un post editado no cambia en el servidor | El HTML se revalida, pero puede quedar cacheado en tu navegador. Recarga forzada antes de sospechar del despliegue |
 | El grafo de la portada no aparece | Es normal bajo 47.5rem de ancho: está oculto en móvil a propósito |

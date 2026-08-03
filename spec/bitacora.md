@@ -16,6 +16,12 @@ _Una entrada por sesión de trabajo. Entradas nuevas arriba. Sin prosa de rellen
 
 - ESLint limpio. `astro check`: 0 errores, 0 avisos, 0 hints. Build de 10 páginas.
 
+**Un sobresalto**
+
+Al ir a publicar, `rsync` murió con `/sbin/nologin` y `code 12`. No era el despliegue: **Hostinger había cambiado la cuenta de servidor**. El usuario, el puerto y la clave seguían valiendo; solo cambió la IP (`46.202.183.217` → `195.35.41.12`). Una línea en `~/.ssh/config` y a seguir. Queda anotado en el runbook junto al síntoma del acceso SSH desactivado, que da el mismo error.
+
+Efecto secundario de la migración: el primer simulacro listó los 31 archivos como si todos hubieran cambiado. Las fechas de modificación se rehicieron al copiar y `rsync` compara por tamaño y fecha. Lo único que importaba era la línea `deleting`, y era la correcta: el CSS viejo.
+
 **Pendiente**
 
 - Decidir qué pasa con `grafo/` en la raíz.
