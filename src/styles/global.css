@@ -85,30 +85,7 @@ html {
 body {
   min-width: 20rem;
   margin: 0;
-  background-color: var(--cream);
-  background-image:
-    radial-gradient(
-      68rem 30rem at 14% -10%,
-      color-mix(in oklab, var(--accent) 16%, transparent),
-      transparent 72%
-    ),
-    radial-gradient(
-      56rem 32rem at 88% 108%,
-      color-mix(in oklab, var(--gold) 14%, transparent),
-      transparent 72%
-    ),
-    radial-gradient(
-      47rem 26rem at 96% 0%,
-      color-mix(in oklab, var(--teal) 13%, transparent),
-      transparent 74%
-    ),
-    radial-gradient(
-      44rem 24rem at 50% -6%,
-      color-mix(in oklab, var(--rose) 10%, transparent),
-      transparent 72%
-    );
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: var(--paper);
   color: var(--ink);
   font-family: var(--font-serif);
   font-size: var(--reading-size);

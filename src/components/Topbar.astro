@@ -145,6 +145,10 @@ const links = [
    * encogiendo la página para que cupiera, con una franja muerta a la derecha.
    * Con `left: 0; right: 0` el velo mide exactamente la ventana y no puede
    * desbordarse por definición.
+   *
+   * `top: 0`, igual que `.topbar`: los dos tienen que arrancar en el mismo
+   * punto o queda una franja sin desenfoque donde asoma crudo el degradado
+   * del fondo del body.
    */
   .topbar::before {
     position: fixed;
