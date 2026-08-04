@@ -9,9 +9,10 @@ const links = [
 ---
 
 {/*
-  Testigo de un píxel, justo encima de la barra. Cuando sale de la pantalla es
-  que el lector empezó a bajar. Se resuelve con IntersectionObserver y no
-  escuchando `scroll`: no se ejecuta nada en cada cuadro del desplazamiento.
+  Ocupa en el flujo el hueco que la barra fija ya no deja, más el margen que
+  la separa del contenido. Cuando sale de la pantalla es que el lector empezó
+  a bajar. Se resuelve con IntersectionObserver y no escuchando `scroll`: no
+  se ejecuta nada en cada cuadro del desplazamiento.
 */}
 <span class="centinela" aria-hidden="true"></span>
 
@@ -66,6 +67,15 @@ const links = [
     new IntersectionObserver(([entrada]) => {
       barra.toggleAttribute("data-scrolled", !entrada.isIntersecting);
     }).observe(centinela);
+
+    // La altura real de la barra fija (y no un número inventado) es lo que
+    // reserva su hueco en el flujo: así no se descuadra si cambia el
+    // contenido, la fuente tarda en cargar o el usuario agranda el texto.
+    const raiz = document.documentElement;
+    const medir = () =>
+      raiz.style.setProperty("--topbar-h", `${barra.offsetHeight}px`);
+    medir();
+    new ResizeObserver(medir).observe(barra);
   }
 
   const boton = document.getElementById("theme-toggle");
@@ -100,16 +110,26 @@ const links = [
 </script>
 
 <style>
+  /*
+   * `fixed` y no `sticky`: con `sticky`, mientras el desplazamiento no supera
+   * el padding superior del `.shell`, la barra viajaba pegada al contenido
+   * antes de anclarse arriba, y ese primer tramo se veía como que «se
+   * movía». Con `fixed` queda clavada en `--topbar-offset` desde el primer
+   * píxel de scroll: el mismo aire que ya tenía arriba, pero constante.
+   */
   .topbar {
-    position: sticky;
+    position: fixed;
     z-index: 20;
-    top: 0;
+    top: var(--topbar-offset);
+    right: 0;
+    left: 0;
+    width: min(100% - clamp(2.75rem, 9vw, 5rem), var(--shell-width));
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
+    margin-inline: auto;
     padding-block: 0.875rem;
-    margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
   }
 
   /*
@@ -189,11 +209,10 @@ const links = [
     display: none;
   }
 
-  /* No ocupa sitio: solo marca dónde está el principio de la página. */
   .centinela {
     display: block;
-    height: 1px;
-    margin-bottom: -1px;
+    height: var(--topbar-h, 3.6rem);
+    margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
   }
 
   /*
@@ -278,6 +297,9 @@ const links = [
   @media (max-width: 34rem) {
     .topbar {
       gap: 1rem;
+    }
+
+    .centinela {
       margin-bottom: 2.5rem;
     }
 
