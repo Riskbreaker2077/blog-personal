@@ -103,7 +103,10 @@ _Entidad central del blog._
 - Tipografía: Newsreader para lectura; IBM Plex Mono para fechas, temas y metadatos.
 - Ancho de lectura: máx. ~70 caracteres por línea en desktop. Móvil: a una columna, tipografía generosa.
 - Sin animaciones innecesarias. Sin parallax. Los degradados se limitan al fondo fijo, los marcos de imagen, la línea del pensamiento y el borde del footer.
-- **Única excepción a lo anterior:** el grafo de la portada (`GrafoCerebral.astro`). Es la ilustración, no un adorno superpuesto al contenido: no se mueve nada del texto, se detiene fuera de pantalla, respeta `prefers-reduced-motion` y no existe en móvil. Cualquier otra animación vuelve a necesitar discusión.
+- **Excepciones a lo anterior**, cada una discutida y aprobada por separado:
+  - El grafo de la portada (`GrafoCerebral.astro`). Es la ilustración, no un adorno superpuesto al contenido: no se mueve nada del texto, se detiene fuera de pantalla, respeta `prefers-reduced-motion` y no existe en móvil.
+  - Las manchas difusas de `/sobre/` (aprobado el 3 de agosto de 2026). Decoración ambiental al lado derecho del texto, en CSS puro (`@keyframes`, sin JavaScript ni dependencias externas): nacen, se alejan y se difuminan hasta desaparecer. Pueden alcanzar el borde del texto de forma ocasional, nunca cubrirlo de forma sostenida. `aria-hidden`, `pointer-events: none`, respeta `prefers-reduced-motion` y no existe en móvil.
+  - Cualquier otra animación vuelve a necesitar discusión.
 - El tema se resuelve con un script inline en `<head>` (evita el parpadeo) y se persiste en `localStorage` bajo la clave `tema`.
 - Licencia del contenido editorial: CC BY-NC 4.0.
 

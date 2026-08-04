@@ -10,6 +10,59 @@ const credito = SITIO.creditoImagenSocial;
   description="Camilo Moreno: docente de Ciencias Sociales y filosofía, doctorando en filosofía en la Universidad del Valle y co-fundador de Sof.IA Servicios Editoriales."
 >
   <div class="about-body">
+    {/*
+      Decoración ambiental, no ilustración: anillos que nacen cerca del borde
+      derecho del texto, se alejan y se difuminan hasta desaparecer. La
+      mayoría son burbujas rápidas (9-16s) para que se sienta efervescente;
+      unas pocas, más grandes y lentas (24-34s), dan profundidad de fondo. Los
+      desfases de `--dur`/`--delay` son deliberadamente irregulares para que
+      no lean como un pulso sincronizado. Solo los anillos 7 y 12 nacen ya
+      pegados al texto y viajan hacia adentro (`--dx` negativo): los demás se
+      alejan. Aprobado como segunda excepción a "sin animaciones" en
+      spec/constitution/tech-stack.md.
+    */}
+    <div class="fermento" aria-hidden="true">
+      <span
+        style="--x: 80%; --y: 3%; --size: 2rem; --tone: var(--accent); --dx: 2.5rem; --dy: 2rem; --dur: 12s; --delay: -2s;"
+      ></span>
+      <span
+        style="--x: 55%; --y: 10%; --size: 1.6rem; --tone: var(--gold); --dx: 3rem; --dy: -1.5rem; --dur: 9s; --delay: -5s;"
+      ></span>
+      <span
+        style="--x: 92%; --y: 16%; --size: 2.4rem; --tone: var(--teal); --dx: 2rem; --dy: 3rem; --dur: 15s; --delay: -8s;"
+      ></span>
+      <span
+        style="--x: 60%; --y: 22%; --size: 1.8rem; --tone: var(--rose); --dx: 2.5rem; --dy: -2rem; --dur: 11s; --delay: -1s;"
+      ></span>
+      <span
+        style="--x: 40%; --y: 30%; --size: 4.5rem; --tone: var(--coffee); --dx: 4rem; --dy: 2.5rem; --dur: 27s; --delay: -14s;"
+      ></span>
+      <span
+        style="--x: 88%; --y: 38%; --size: 2rem; --tone: var(--accent); --dx: 2rem; --dy: 2rem; --dur: 13s; --delay: -6s;"
+      ></span>
+      <span
+        style="--x: 20%; --y: 46%; --size: 3.2rem; --tone: var(--teal); --dx: -5.5rem; --dy: 1.5rem; --dur: 34s; --delay: -20s;"
+      ></span>
+      <span
+        style="--x: 70%; --y: 52%; --size: 1.7rem; --tone: var(--gold); --dx: 3rem; --dy: -2.5rem; --dur: 10s; --delay: -3s;"
+      ></span>
+      <span
+        style="--x: 95%; --y: 60%; --size: 2.3rem; --tone: var(--rose); --dx: 2rem; --dy: 3rem; --dur: 16s; --delay: -9s;"
+      ></span>
+      <span
+        style="--x: 50%; --y: 68%; --size: 1.9rem; --tone: var(--coffee); --dx: 3.5rem; --dy: -2rem; --dur: 12s; --delay: -7s;"
+      ></span>
+      <span
+        style="--x: 85%; --y: 76%; --size: 4rem; --tone: var(--accent); --dx: 2.5rem; --dy: 3.5rem; --dur: 24s; --delay: -11s;"
+      ></span>
+      <span
+        style="--x: 35%; --y: 84%; --size: 1.6rem; --tone: var(--teal); --dx: -3rem; --dy: 2rem; --dur: 14s; --delay: -4s;"
+      ></span>
+      <span
+        style="--x: 92%; --y: 90%; --size: 2.2rem; --tone: var(--gold); --dx: 2rem; --dy: -2.5rem; --dur: 11s; --delay: -6s;"
+      ></span>
+    </div>
+
     <h1>Sobre <em>Camilo Moreno</em></h1>
 
     <p>
@@ -83,7 +136,77 @@ const credito = SITIO.creditoImagenSocial;
 
 <style>
   .about-body {
+    position: relative;
     max-width: 51.25rem;
+  }
+
+  /*
+   * Ancla a la derecha del texto, no del `.shell`: así el borde de partida de
+   * las manchas se mueve con el ancho real de la columna de lectura en vez de
+   * quedar fijo a un punto arbitrario de la página.
+   */
+  .fermento {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: -1;
+    width: 16rem;
+    height: 100%;
+    margin-left: -2rem;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /*
+   * Anillo de línea, no mancha rellena: así se lee como una onda que se
+   * expande, igual que el efecto "dissolve" del archivo de referencia
+   * (círculos trazados con `stroke`, sin relleno).
+   */
+  .fermento span {
+    position: absolute;
+    top: var(--y);
+    left: var(--x);
+    width: var(--size);
+    height: var(--size);
+    border: 1.25px solid var(--tone);
+    border-radius: 50%;
+    opacity: 0;
+    animation: fermentar var(--dur) ease-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes fermentar {
+    0% {
+      filter: blur(0px);
+      opacity: 0;
+      transform: translate(0, 0) scale(0.5);
+    }
+    8% {
+      filter: blur(0.5px);
+      opacity: 0.7;
+    }
+    50% {
+      filter: blur(1.5px);
+      opacity: 0.42;
+    }
+    100% {
+      filter: blur(4px);
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) scale(2.5);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fermento {
+      display: none;
+    }
+  }
+
+  /* Sin margen a la derecha del texto en pantallas angostas: no hay sobre qué desbordarse. */
+  @media (max-width: 47.5rem) {
+    .fermento {
+      display: none;
+    }
   }
 
   h1 {
